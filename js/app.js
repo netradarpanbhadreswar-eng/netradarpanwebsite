@@ -8,58 +8,75 @@
 const DOCTORS = [
     {
         id: 'doc-1',
-        name: 'Dr. Debasish Roy',
+        name: 'Dr. Manas Kr. Pal',
         specialty: 'Cataract',
-        deptLabel: 'Cataract & Anterior Segment',
-        degrees: 'MBBS, MS (Ophthalmology), FICO',
-        experience: '18+ Years Experience',
+        deptLabel: 'Consultant Eye Surgeon',
+        degrees: 'M.B.B.S, M.S. (Hons), D.O. (RIO), M.S. (OPHTHAL)',
+        regNo: '59053 (WBMC)',
+        email: '',
         branch: 'Bhadreswar Main Hospital',
-        timing: 'Mon, Wed, Fri (10:00 AM – 3:00 PM)',
-        slots: ['10:00 AM', '10:45 AM', '11:30 AM', '12:15 PM', '01:00 PM', '02:00 PM', '05:00 PM', '06:30 PM', '08:00 PM']
+        timing: 'Mon, Wed, Fri (10:00 AM – 2:00 PM)',
+        slots: ['10:00 AM', '10:45 AM', '11:30 AM', '12:15 PM', '01:00 PM', '01:30 PM']
     },
     {
         id: 'doc-2',
-        name: 'Dr. Subhashree Ghosh',
-        specialty: 'Retina',
-        deptLabel: 'Vitreo-Retina & Medical Retina',
-        degrees: 'MBBS, DO, DNB (Retina Fellowship)',
-        experience: '14+ Years Experience',
+        name: 'Dr. Avijit Roy',
+        specialty: 'Cataract',
+        deptLabel: 'Consultant Eye Surgeon',
+        degrees: 'M.B.B.S. (NRS), M.S. (Eye) NRS',
+        regNo: 'WBMC 76886',
+        email: 'dravijitroy1960@gmail.com',
         branch: 'Bhadreswar Main Hospital',
-        timing: 'Tue, Thu, Sat (10:30 AM – 4:00 PM)',
-        slots: ['10:30 AM', '11:15 AM', '12:00 PM', '01:30 PM', '02:30 PM', '03:30 PM', '06:00 PM', '07:30 PM']
+        timing: 'Tue, Thu, Sat (10:30 AM – 3:30 PM)',
+        slots: ['10:30 AM', '11:15 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM']
     },
     {
         id: 'doc-3',
-        name: 'Dr. Anirban Mukherjee',
+        name: 'Dr. Anamika Paul',
         specialty: 'Glaucoma',
-        deptLabel: 'Glaucoma Specialist & Laser Surgeon',
-        degrees: 'MBBS, MS, Fellowship in Glaucoma (AEH)',
-        experience: '12+ Years Experience',
+        deptLabel: 'Fellow in Glaucoma (Aravind Eye Hospital, Chennai)',
+        degrees: 'M.B.B.S (SSKM), M.S (R.I.O)',
+        regNo: '80637 (WBMC)',
+        email: '',
         branch: 'Bhadreswar Main Hospital',
-        timing: 'Mon, Tue, Thu (11:00 AM – 5:00 PM)',
-        slots: ['11:00 AM', '11:45 AM', '12:30 PM', '02:00 PM', '03:00 PM', '04:00 PM', '06:00 PM', '08:00 PM']
+        timing: 'Every Thursday (6:00 PM – 8:00 PM) (By Appointment)',
+        slots: ['06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM']
     },
     {
         id: 'doc-4',
-        name: 'Dr. Moumita Sen',
+        name: 'Dr. Q Shehnaz Waheed',
         specialty: 'Cornea',
-        deptLabel: 'Cornea & Ocular Surface Specialist',
-        degrees: 'MBBS, MS (Ophth), Cornea Fellowship',
-        experience: '10+ Years Experience',
+        deptLabel: 'Eye Surgeon',
+        degrees: 'M.B.B.S, M.S (K.O.L)',
+        regNo: 'WBMC 67494',
+        email: '',
         branch: 'Bhadreswar Main Hospital',
-        timing: 'Wed, Fri, Sat (10:00 AM – 3:30 PM)',
-        slots: ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '01:00 PM', '02:00 PM', '05:30 PM', '07:00 PM']
+        timing: 'Mon, Wed, Fri (2:00 PM – 6:00 PM)',
+        slots: ['02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM']
     },
     {
         id: 'doc-5',
-        name: 'Dr. Tanmoy Banerjee',
-        specialty: 'Pediatric',
-        deptLabel: 'Pediatric Ophthalmology & Squint',
-        degrees: 'MBBS, DNB, Pediatric Ophthalmology Fellow',
-        experience: '9+ Years Experience',
+        name: 'Dr. Souvik Ganguly',
+        specialty: 'Retina',
+        deptLabel: 'Consultant Eye Surgeon & Retina Specialist',
+        degrees: 'M.B.B.S, M.S. (OPHTH)',
+        regNo: '75148 (WBMC)',
+        email: '',
         branch: 'Bhadreswar Main Hospital',
-        timing: 'Tue, Thu, Sat (2:00 PM – 8:30 PM)',
-        slots: ['02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
+        timing: 'Wed: 12:00 PM – 2:00 PM | Fri, Sat: 7:00 PM – 9:00 PM',
+        slots: ['12:00 PM', '01:00 PM', '07:00 PM', '07:45 PM', '08:30 PM']
+    },
+    {
+        id: 'doc-6',
+        name: 'Dr. Abhisek Chaubey',
+        specialty: 'Pediatric',
+        deptLabel: 'Consultant Ophthalmologist',
+        degrees: 'MBBS, MS',
+        regNo: 'WBMC 67997',
+        email: '',
+        branch: 'Bhadreswar Main Hospital',
+        timing: 'Every Thursday (11:00 AM – 4:00 PM)',
+        slots: ['11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM']
     }
 ];
 
@@ -71,7 +88,7 @@ let appointments = JSON.parse(localStorage.getItem('netradarpan_appointments')) 
         patientPhone: '9830011223',
         patientAge: 62,
         patientGender: 'Male',
-        doctorName: 'Dr. Debasish Roy',
+        doctorName: 'Dr. Manas Kr. Pal',
         specialty: 'Cataract',
         appointmentDate: '2026-09-02',
         slotTime: '11:30 AM',
@@ -86,10 +103,10 @@ let appointments = JSON.parse(localStorage.getItem('netradarpan_appointments')) 
         patientPhone: '9874561230',
         patientAge: 45,
         patientGender: 'Female',
-        doctorName: 'Dr. Subhashree Ghosh',
+        doctorName: 'Dr. Souvik Ganguly',
         specialty: 'Retina',
-        appointmentDate: '2026-09-03',
-        slotTime: '12:00 PM',
+        appointmentDate: '2026-09-04',
+        slotTime: '07:00 PM',
         branch: '1, Jagadhatripally, Bhadreswar',
         status: 'pending',
         symptoms: 'Diabetic eye screening & laser checkup',
@@ -108,7 +125,7 @@ let patientFeedbacks = JSON.parse(localStorage.getItem('netradarpan_feedbacks'))
         name: 'Bijoy Kumar Ghosh',
         rating: 5,
         service: 'Cataract Phaco Surgery',
-        comment: 'I had my cataract surgery performed under Dr. Debasish Roy. The painless micro-incision procedure and caring nursing staff at Bhadreswar gave me crystal clear vision back. Highly recommended!',
+        comment: 'I had my cataract surgery performed under Dr. Manas Kr. Pal. The painless micro-incision procedure and caring nursing staff at Bhadreswar gave me crystal clear vision back. Highly recommended!',
         date: '2026-08-15'
     },
     {
@@ -581,12 +598,18 @@ function renderDoctors(filter = 'all') {
             </div>
             <div class="doctor-info">
                 <div class="doctor-degrees">${doc.degrees}</div>
-                <div style="border-top: 1px solid var(--brand-border); padding-top: 10px; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                    <span><i class="fa-solid fa-award"></i> ${doc.experience}</span>
-                    <span><i class="fa-solid fa-location-dot"></i> Bhadreswar</span>
-                </div>
-                <div style="font-size: 12px; color: var(--brand-primary); background: var(--brand-light); padding: 6px 10px; border-radius: 4px; margin-bottom: 14px; font-weight: 600;">
-                    <i class="fa-solid fa-calendar-days"></i> ${doc.timing}
+                ${doc.regNo ? `
+                    <div style="border-top: 1px solid var(--brand-border); padding-top: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <i class="fa-solid fa-id-card" style="color: var(--brand-crimson); margin-right: 6px;"></i> Reg. No: <strong style="color: var(--text-heading);">${doc.regNo}</strong>
+                    </div>
+                ` : '<div style="border-top: 1px solid var(--brand-border); padding-top: 10px;"></div>'}
+                ${doc.email ? `
+                    <div style="font-size: 11.5px; color: var(--brand-primary); margin-bottom: 8px; word-break: break-all;">
+                        <i class="fa-solid fa-envelope" style="color: var(--brand-amber); margin-right: 6px;"></i> <a href="mailto:${doc.email}" style="color: inherit; text-decoration: none; font-weight: 600;">${doc.email}</a>
+                    </div>
+                ` : ''}
+                <div style="font-size: 12px; color: var(--brand-primary); background: var(--brand-light); padding: 8px 10px; border-radius: 6px; margin-bottom: 14px; font-weight: 600; line-height: 1.45;">
+                    <i class="fa-solid fa-calendar-days" style="margin-right: 5px;"></i> ${doc.timing}
                 </div>
                 <button class="btn btn-primary" onclick="openBookingWizard('${doc.id}', '${doc.specialty}')" style="width: 100%;">
                     <i class="fa-solid fa-calendar-check"></i> Book OPD Slot
