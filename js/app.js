@@ -34,7 +34,7 @@ const DOCTORS = [
         id: 'doc-3',
         name: 'Dr. Anamika Paul',
         specialty: 'Glaucoma',
-        deptLabel: 'Fellow in Glaucoma (Aravind Eye Hospital, Chennai)',
+        deptLabel: 'Fellow in Glaucoma',
         degrees: 'M.B.B.S (SSKM), M.S (R.I.O)',
         regNo: '80637 (WBMC)',
         email: '',
@@ -55,28 +55,28 @@ const DOCTORS = [
         slots: ['02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM']
     },
     {
-        id: 'doc-5',
-        name: 'Dr. Souvik Ganguly',
-        specialty: 'Retina',
-        deptLabel: 'Consultant Eye Surgeon & Retina Specialist',
-        degrees: 'M.B.B.S, M.S. (OPHTH)',
-        regNo: '75148 (WBMC)',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Wed: 12:00 PM – 2:00 PM | Fri, Sat: 7:00 PM – 9:00 PM',
-        slots: ['12:00 PM', '01:00 PM', '07:00 PM', '07:45 PM', '08:30 PM']
-    },
-    {
         id: 'doc-6',
         name: 'Dr. Abhisek Chaubey',
         specialty: 'Pediatric',
-        deptLabel: 'Consultant Ophthalmologist',
+        deptLabel: 'Consultant Eye Surgeon',
         degrees: 'MBBS, MS',
         regNo: 'WBMC 67997',
         email: '',
         branch: 'Bhadreswar Main Hospital',
         timing: 'Every Thursday (11:00 AM – 4:00 PM)',
         slots: ['11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM']
+    },
+    {
+        id: 'doc-7',
+        name: 'Opt. Kanchan Chatterjee',
+        specialty: 'Senior Optometrist',
+        deptLabel: 'Senior Optometrist',
+        degrees: 'Primary Eye Check-up & Refraction Contact Lens Assessment & Training Based Practice',
+        regNo: '',
+        email: '',
+        branch: 'Bhadreswar Main Hospital',
+        timing: 'Mon-Sun (10:00 AM – 9:00 PM)',
+        slots: []
     }
 ];
 
@@ -95,21 +95,6 @@ let appointments = JSON.parse(localStorage.getItem('netradarpan_appointments')) 
         branch: '1, Jagadhatripally, Bhadreswar',
         status: 'confirmed',
         symptoms: 'Blurred vision in right eye for 3 months',
-        createdDate: '2026-08-30'
-    },
-    {
-        reference: 'ND-2026-10483',
-        patientName: 'Ananya Mukherjee',
-        patientPhone: '9874561230',
-        patientAge: 45,
-        patientGender: 'Female',
-        doctorName: 'Dr. Souvik Ganguly',
-        specialty: 'Retina',
-        appointmentDate: '2026-09-04',
-        slotTime: '07:00 PM',
-        branch: '1, Jagadhatripally, Bhadreswar',
-        status: 'pending',
-        symptoms: 'Diabetic eye screening & laser checkup',
         createdDate: '2026-08-30'
     }
 ];
@@ -257,8 +242,8 @@ function updateDoctorDropdown() {
     if (!specialtyEl || !docSelect) return;
 
     const specialty = specialtyEl.value;
-    const matchedDocs = specialty === 'General' 
-        ? DOCTORS 
+    const matchedDocs = specialty === 'General'
+        ? DOCTORS
         : DOCTORS.filter(d => d.specialty === specialty);
 
     docSelect.innerHTML = (matchedDocs.length > 0 ? matchedDocs : DOCTORS).map(d => `
@@ -417,8 +402,8 @@ function searchPatientAppointments() {
     let matched = appointments;
 
     if (query) {
-        matched = appointments.filter(a => 
-            a.patientPhone.includes(query) || 
+        matched = appointments.filter(a =>
+            a.patientPhone.includes(query) ||
             a.reference.toLowerCase().includes(query) ||
             a.patientName.toLowerCase().includes(query)
         );
@@ -477,7 +462,7 @@ function printSingleSlip(ref) {
     const a = appointments.find(x => x.reference === ref);
     if (!a) return;
     openBookingWizard();
-    
+
     document.getElementById('slipRefCode').innerText = a.reference;
     document.getElementById('slipPatientName').innerText = a.patientName;
     document.getElementById('slipPatientPhone').innerText = a.patientPhone;
@@ -583,8 +568,8 @@ function renderDoctors(filter = 'all') {
     const container = document.getElementById('doctorContainer');
     if (!container) return;
 
-    const filtered = filter === 'all' 
-        ? DOCTORS 
+    const filtered = filter === 'all'
+        ? DOCTORS
         : DOCTORS.filter(d => d.specialty.toLowerCase() === filter.toLowerCase());
 
     container.innerHTML = filtered.map(doc => `
@@ -630,7 +615,7 @@ function closeModals() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target.classList.contains('modal-overlay')) {
         closeModals();
     }
@@ -669,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile dropdown toggle on click for touch devices
     document.querySelectorAll('.nav-item-dropdown > a').forEach(dropdownAnchor => {
-        dropdownAnchor.addEventListener('click', function(e) {
+        dropdownAnchor.addEventListener('click', function (e) {
             if (window.innerWidth <= 768) {
                 // If clicked on arrow or in mobile view, toggle menu if not already open
                 const parent = this.parentElement;
