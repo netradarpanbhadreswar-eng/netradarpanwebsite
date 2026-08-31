@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Patient Portal & Eye Care Guide - Netradarpan Hospital. Learn about eye anatomy, disease treatments, OPD expectations, free camps, and manage your appointments.">
+    <title>Patient Portal & Eye Health Guide | Netradarpan Hospital</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span><i class="fa-solid fa-clock text-amber"></i> <strong>OPD Hours:</strong> 10:00 AM – 9:00 PM (Mon–Sat)</span>
+            <span class="badge-ayushman"><i class="fa-solid fa-certificate"></i> Ayushman Bharat Empanelled</span>
+        </div>
+        <div class="top-bar-right">
+            <a href="tel:03326332027"><i class="fa-solid fa-phone"></i> Helpline: 033-26332027</a>
+            <a href="mailto:netradarpanbhadreswar@gmail.com"><i class="fa-solid fa-envelope"></i> netradarpanbhadreswar@gmail.com</a>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="top-header">
+        <a href="index.html" class="brand-container">
+            <img src="images/logo.png" alt="Netradarpan Hospital Logo" class="brand-logo-img" onerror="this.src='images/logo.jpg'">
+            <div class="brand-text">
+                <div class="logo-name">NETRADARPAN HOSPITAL</div>
+                <div class="tagline">Bhadreswar Netradarpan Welfare Foundation (Reg. 2009)</div>
+                <div class="sub-location"><i class="fa-solid fa-location-dot"></i> 1, Jagadhatripally, Bhadreswar - 712124, Hooghly, WB</div>
+            </div>
+        </a>
+
+        <div class="header-actions">
+            <a href="#portal-appointments" class="btn btn-outline">
+                <i class="fa-solid fa-clipboard-user"></i> My Appointments
+            </a>
+            <button class="btn btn-accent" onclick="openBookingWizard()">
+                <i class="fa-solid fa-calendar-check"></i> Book Appointment
+            </button>
+            <button class="btn btn-secondary" onclick="openAdminModal()">
+                <i class="fa-solid fa-user-shield"></i> Staff Login
+            </button>
+        </div>
+    </header>
+
+    <!-- NAVIGATION MENU -->
+    <nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()">
+            <i class="fa-solid fa-bars"></i> Menu
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li class="nav-item-dropdown">
+                <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us <i class="fa-solid fa-chevron-down nav-chevron"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="about.html#journey"><i class="fa-solid fa-landmark"></i> About Us & Journey</a></li>
+                    <li><a href="about.html#mission"><i class="fa-solid fa-bullseye"></i> Our Mission & Vision</a></li>
+                    <li class="dropdown-header-label">Our Priority Programmes</li>
+                    <li><a href="about.html#priority-programmes"><i class="fa-solid fa-layer-group"></i> Programmes Overview</a></li>
+                    <li><a href="about.html#hospital-in-a-bag"><i class="fa-solid fa-suitcase-medical"></i> Hospital in a Bag</a></li>
+                    <li><a href="about.html#eye-screening-camps"><i class="fa-solid fa-tent"></i> Eye Screening Camps</a></li>
+                    <li><a href="about.html#ayushman-bharat"><i class="fa-solid fa-certificate"></i> Ayushman Bharat (PM-JAY)</a></li>
+                    <li><a href="about.html#community-eye-care"><i class="fa-solid fa-hand-holding-heart"></i> Community Eye Care</a></li>
+                </ul>
+            </li>
+            <li><a href="specialties.html"><i class="fa-solid fa-stethoscope"></i> Clinical Specialties</a></li>
+            <li><a href="doctors.html"><i class="fa-solid fa-user-doctor"></i> Our Doctors</a></li>
+            <li><a href="patient-portal.html" class="active"><i class="fa-solid fa-hospital-user"></i> Patient Portal</a></li>
+            <li><a href="csr-camps.html"><i class="fa-solid fa-hand-holding-heart"></i> CSR & Camps</a></li>
+            <li><a href="feedback.html"><i class="fa-solid fa-star"></i> Feedback</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-address-book"></i> Contact Us</a></li>
+            <li><a href="javascript:void(0)" onclick="openBookingWizard()" class="nav-book-btn"><i class="fa-solid fa-calendar-plus"></i> Book Online</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE BANNER -->
+    <div class="page-banner">
+        <h1>Patient Portal & Resource Center</h1>
+        <p>Your one-stop guide to eye anatomy, clinical disease treatments, hospital visit expectations, outreach camps, and online appointment management.</p>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> <span>/</span> <span>Patient Portal</span>
+        </div>
+    </div>
+
+    <!-- SUBSECTION QUICK NAVIGATION TABS -->
+    <div style="padding: 24px 5% 0;">
+        <div class="portal-subnav">
+            <a href="#about-eye" class="portal-nav-tab active"><i class="fa-solid fa-eye"></i> About the Eye</a>
+            <a href="#disease-treatment" class="portal-nav-tab"><i class="fa-solid fa-stethoscope"></i> Eye Disease & Treatment</a>
+            <a href="#what-to-expect" class="portal-nav-tab"><i class="fa-solid fa-hospital-user"></i> What to Expect</a>
+            <a href="#camps" class="portal-nav-tab"><i class="fa-solid fa-hand-holding-medical"></i> Camps & Outreach</a>
+            <a href="#portal-appointments" class="portal-nav-tab"><i class="fa-solid fa-clipboard-check"></i> My Appointments</a>
+        </div>
+    </div>
+
+    <main class="section">
+        <!-- ======================================================== -->
+        <!-- SUBSECTION 1: ABOUT THE EYE                              -->
+        <!-- ======================================================== -->
+        <div class="portal-section-box" id="about-eye">
+            <h3><i class="fa-solid fa-eye" style="color: var(--brand-primary);"></i> 1. About the Human Eye</h3>
+            <p>
+                The human eye is one of the most intricate organs in the human body, functioning very much like a digital camera. Light rays pass through the clear front window (the <strong>cornea</strong>), are focused by the natural <strong>crystalline lens</strong>, and form an inverted sharp image on the light-sensitive <strong>retina</strong> at the back of the eye.
+            </p>
+
+            <div class="anatomy-grid">
+                <div class="anatomy-card">
+                    <h4><i class="fa-solid fa-shield-halved text-primary"></i> Cornea</h4>
+                    <p>The clear, dome-shaped outer surface providing about two-thirds of the eye's total focusing optical power.</p>
+                </div>
+                <div class="anatomy-card">
+                    <h4><i class="fa-solid fa-circle-dot text-primary"></i> Crystalline Lens</h4>
+                    <p>The transparent flexible structure behind the iris that changes shape to focus near and distant objects sharply.</p>
+                </div>
+                <div class="anatomy-card">
+                    <h4><i class="fa-solid fa-network-wired text-primary"></i> Retina & Macula</h4>
+                    <p>The multilayered neuro-sensory coat converting light signals into nerve impulses. The macula gives high-definition color vision.</p>
+                </div>
+                <div class="anatomy-card">
+                    <h4><i class="fa-solid fa-bolt text-primary"></i> Optic Nerve</h4>
+                    <p>The biological cable composed of over a million nerve fibers carrying visual data from the retina directly to the brain.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; background: var(--brand-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--brand-amber);">
+                <strong style="color: var(--brand-dark);"><i class="fa-solid fa-lightbulb text-amber"></i> Daily Eye Care Rule (20-20-20 Rule):</strong>
+                <p style="font-size: 13.5px; margin-top: 4px; color: var(--text-body);">
+                    When working on computers or mobile screens, look at an object 20 feet away for 20 seconds every 20 minutes to prevent digital eye strain and dry eye syndrome.
+                </p>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SUBSECTION 2: EYE DISEASE & TREATMENT                    -->
+        <!-- ======================================================== -->
+        <div class="portal-section-box" id="disease-treatment">
+            <h3><i class="fa-solid fa-stethoscope" style="color: var(--brand-crimson);"></i> 2. Eye Disease & Treatment Guide</h3>
+            <p>
+                Early diagnosis is crucial for preventing irreversible vision loss. Review the common ophthalmic disorders treated at Netradarpan Hospital:
+            </p>
+
+            <div class="disease-grid">
+                <div class="disease-card">
+                    <h4><i class="fa-solid fa-circle-exclamation"></i> Cataract (Chhani)</h4>
+                    <p style="font-size: 13.5px; margin-bottom: 10px;"><strong>Symptoms:</strong> Clouded, blurred vision, difficulty driving at night, glare around lights.</p>
+                    <p style="font-size: 13.5px; color: var(--brand-primary); font-weight: 600;"><strong>Treatment:</strong> Micro-Incision Phacoemulsification with foldable intraocular lens implantation. Same-day discharge.</p>
+                </div>
+
+                <div class="disease-card">
+                    <h4><i class="fa-solid fa-circle-exclamation"></i> Glaucoma (Kala Motia)</h4>
+                    <p style="font-size: 13.5px; margin-bottom: 10px;"><strong>Symptoms:</strong> Often zero early symptoms; gradual loss of peripheral vision, optic nerve damage.</p>
+                    <p style="font-size: 13.5px; color: var(--brand-primary); font-weight: 600;"><strong>Treatment:</strong> Daily hypotensive eye drops, Nd:YAG Laser Iridotomy, or surgical filtration trabeculectomy.</p>
+                </div>
+
+                <div class="disease-card">
+                    <h4><i class="fa-solid fa-circle-exclamation"></i> Diabetic Retinopathy</h4>
+                    <p style="font-size: 13.5px; margin-bottom: 10px;"><strong>Symptoms:</strong> Floating spots, blurred vision, sudden dark visual patches caused by leaking retinal blood vessels.</p>
+                    <p style="font-size: 13.5px; color: var(--brand-primary); font-weight: 600;"><strong>Treatment:</strong> Retinal Green Laser Photocoagulation and Intravitreal Anti-VEGF injections.</p>
+                </div>
+
+                <div class="disease-card">
+                    <h4><i class="fa-solid fa-circle-exclamation"></i> Dry Eye & Allergy</h4>
+                    <p style="font-size: 13.5px; margin-bottom: 10px;"><strong>Symptoms:</strong> Burning, grittiness, redness, foreign body sensation exacerbated by air conditioning.</p>
+                    <p style="font-size: 13.5px; color: var(--brand-primary); font-weight: 600;"><strong>Treatment:</strong> Preservative-free lubricating drops, lipid gels, and anti-inflammatory eye drops.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SUBSECTION 3: WHAT TO EXPECT AT NETRADARPAN              -->
+        <!-- ======================================================== -->
+        <div class="portal-section-box" id="what-to-expect">
+            <h3><i class="fa-solid fa-hospital-user" style="color: var(--brand-indigo);"></i> 3. What to Expect at Netradarpan Hospital</h3>
+            <p>
+                We strive to make your hospital visit efficient, comfortable, and transparent. Here is what you should expect during your outpatient consultation:
+            </p>
+
+            <div class="expect-steps-grid">
+                <div class="expect-step">
+                    <div class="expect-step-num">1</div>
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Check-in & Token</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Present your online booking reference or register at the counter. Open 10:00 AM – 9:00 PM.</p>
+                </div>
+
+                <div class="expect-step">
+                    <div class="expect-step-num">2</div>
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Optometry & Vision</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Preliminary visual acuity, computerized autorefractometer reading, and eye pressure tonometry.</p>
+                </div>
+
+                <div class="expect-step">
+                    <div class="expect-step-num">3</div>
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Doctor Examination</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Comprehensive slit-lamp evaluation and dilated retina examination by the specialist.</p>
+                </div>
+
+                <div class="expect-step">
+                    <div class="expect-step-num">4</div>
+                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Counseling & Pharmacy</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Prescription medicines, spectacle dispensing, or cashless Ayushman Bharat surgical pre-auth.</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
+                <div style="background: #f8fafc; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--brand-border);">
+                    <strong style="color: var(--brand-primary);"><i class="fa-solid fa-id-card"></i> What to Bring:</strong>
+                    <ul style="margin-left: 20px; font-size: 13px; margin-top: 6px; color: var(--text-body);">
+                        <li>Aadhar Card / Voter ID of patient</li>
+                        <li>Ayushman Bharat PM-JAY / Swasthya Sathi Card (if applicable)</li>
+                        <li>Previous eye prescriptions and current spectacle glasses</li>
+                        <li>Current general medical history (e.g. Blood Sugar / BP reports)</li>
+                    </ul>
+                </div>
+
+                <div style="background: #fff7ed; padding: 18px; border-radius: var(--radius-sm); border: 1px solid #fed7aa;">
+                    <strong style="color: var(--brand-crimson);"><i class="fa-solid fa-car-burst"></i> Dilation Note:</strong>
+                    <p style="font-size: 13px; margin-top: 6px; color: var(--text-body);">
+                        Retinal examinations require pupil-dilating eye drops, which temporarily cause blurred near vision for 2 to 3 hours. We recommend bringing sunglasses and avoiding self-driving.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SUBSECTION 4: CAMP (COMMUNITY OUTREACH)                  -->
+        <!-- ======================================================== -->
+        <div class="portal-section-box" id="camps">
+            <h3><i class="fa-solid fa-hand-holding-medical" style="color: var(--brand-amber);"></i> 4. Community Eye Care Camps</h3>
+            <p>
+                True to our founding roots from 2009, Netradarpan Hospital regularly conducts community eye screening camps across Hooghly and neighboring districts to eradicate avoidable blindness.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 20px;">
+                <div style="border: 1px solid var(--brand-border); padding: 18px; border-radius: var(--radius-sm); background: white;">
+                    <span style="font-size: 11px; background: var(--brand-light); color: var(--brand-primary); padding: 3px 8px; border-radius: 4px; font-weight: 700;">WEEKLY CAMP</span>
+                    <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 4px;">Free Rural Eye Screening</h4>
+                    <p style="font-size: 13px; color: var(--text-muted);">Free vision tests, refraction, and cataract identification with subsidized transport to our Bhadreswar hospital.</p>
+                </div>
+
+                <div style="border: 1px solid var(--brand-border); padding: 18px; border-radius: var(--radius-sm); background: white;">
+                    <span style="font-size: 11px; background: #ecfdf5; color: #059669; padding: 3px 8px; border-radius: 4px; font-weight: 700;">SCHOOL INITIATIVE</span>
+                    <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 4px;">Chhatra Netra Raksha</h4>
+                    <p style="font-size: 13px; color: var(--text-muted);">Comprehensive vision checks in primary and high schools, providing free corrective spectacles to students.</p>
+                </div>
+
+                <div style="border: 1px solid var(--brand-border); padding: 18px; border-radius: var(--radius-sm); background: white;">
+                    <span style="font-size: 11px; background: #fff7ed; color: #d97706; padding: 3px 8px; border-radius: 4px; font-weight: 700;">ORGANIZE WITH US</span>
+                    <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 4px;">Host an Eye Camp</h4>
+                    <p style="font-size: 13px; color: var(--text-muted);">Clubs, Panchayats, or NGOs can request our mobile vision team and ophthalmologists to visit their village.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="csr-camps.html" class="btn btn-outline">
+                    View Full Camp Schedules & Request Form →
+                </a>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SUBSECTION 5: MY APPOINTMENTS & STATUS TRACKER           -->
+        <!-- ======================================================== -->
+        <div class="portal-section-box" id="portal-appointments" style="border-top: 4px solid var(--brand-primary);">
+            <h3><i class="fa-solid fa-clipboard-check" style="color: var(--brand-primary);"></i> 5. My Appointments (Status & Digital Slip)</h3>
+            <p style="margin-bottom: 20px;">
+                Enter your registered 10-digit mobile number or Appointment Reference ID to view your upcoming OPD consults, print digital slips, or reschedule.
+            </p>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 24px; max-width: 600px;">
+                <input type="text" class="form-control" id="lookupQuery" placeholder="e.g. 9830011223 or ND-2026-10482">
+                <button class="btn btn-primary" onclick="searchPatientAppointments()">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+
+            <div id="patientResultsContainer">
+                <!-- Rendered dynamically by app.js -->
+            </div>
+
+            <div style="margin-top: 24px; text-align: center;">
+                <button class="btn btn-accent" onclick="openBookingWizard()">
+                    <i class="fa-solid fa-calendar-plus"></i> Book a New Appointment Online
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <img src="images/logo.png" alt="Netradarpan Hospital" style="width: 48px; height: 48px; border-radius: 50%; background: white; padding: 2px;" onerror="this.src='images/logo.jpg'">
+                    <div>
+                        <h4 style="margin-bottom: 0;">NETRADARPAN HOSPITAL</h4>
+                        <div style="font-size: 11.5px; color: var(--brand-yellow);">Bhadreswar Netradarpan Welfare Foundation</div>
+                    </div>
+                </div>
+                <p>Committed to providing world-class ophthalmic care with modern Phaco & Vitreo-Retina facilities to ensure quality vision for all.</p>
+                <p><span class="badge-ayushman"><i class="fa-solid fa-shield"></i> Ayushman Bharat Partner</span></p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="specialties.html">Clinical Specialties</a></li>
+                    <li><a href="doctors.html">Our Doctors</a></li>
+                    <li><a href="csr-camps.html">CSR & Outreach</a></li>
+                    <li><a href="feedback.html">Patient Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Portal Subsections</h4>
+                <ul class="footer-links">
+                    <li><a href="#about-eye">1. About the Human Eye</a></li>
+                    <li><a href="#disease-treatment">2. Eye Disease & Treatments</a></li>
+                    <li><a href="#what-to-expect">3. What to Expect at Netradarpan</a></li>
+                    <li><a href="#camps">4. Community Eye Camps</a></li>
+                    <li><a href="#portal-appointments">5. My Appointments & Slips</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Hospital Location</h4>
+                <p><i class="fa-solid fa-location-dot text-amber"></i> <strong>1, Jagadhatripally, Hooghly, Bhadreswar - 712124, West Bengal, India</strong></p>
+                <p><i class="fa-solid fa-phone text-amber"></i> <strong>033-26332027</strong></p>
+                <p><i class="fa-solid fa-envelope text-amber"></i> <strong>netradarpanbhadreswar@gmail.com</strong></p>
+                <p><i class="fa-solid fa-clock text-amber"></i> <strong>OPD:</strong> 10:00 AM – 9:00 PM</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2009–2026 Netradarpan Hospital (Bhadreswar Netradarpan Welfare Foundation). All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Shared Modals -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-calendar-check" style="color: var(--brand-primary);"></i> Book Doctor Appointment</h3>
+                <button class="modal-close" onclick="closeModals()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="wizard-steps">
+                    <div class="wizard-step active" id="stepIndicator1"><div class="wizard-step-circle">1</div><div class="wizard-step-title">Specialty</div></div>
+                    <div class="wizard-step" id="stepIndicator2"><div class="wizard-step-circle">2</div><div class="wizard-step-title">Doctor & Slot</div></div>
+                    <div class="wizard-step" id="stepIndicator3"><div class="wizard-step-circle">3</div><div class="wizard-step-title">Patient Info</div></div>
+                    <div class="wizard-step" id="stepIndicator4"><div class="wizard-step-circle">4</div><div class="wizard-step-title">Confirmation</div></div>
+                </div>
+
+                <div id="wizardStep1">
+                    <div class="form-group">
+                        <label>Hospital Location *</label>
+                        <select class="form-control" id="bookingBranch">
+                            <option value="1, Jagadhatripally, Bhadreswar">1, Jagadhatripally, Bhadreswar - 712124</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Specialty *</label>
+                        <select class="form-control" id="bookingSpecialty" onchange="updateDoctorDropdown()">
+                            <option value="Cataract">Cataract & Phaco Surgery</option>
+                            <option value="Retina">Vitreo-Retina & Diabetic Eye</option>
+                            <option value="Glaucoma">Glaucoma & Laser Clinic</option>
+                            <option value="Cornea">Cornea & Ocular Surface</option>
+                            <option value="Pediatric">Pediatric Ophthalmology</option>
+                            <option value="General">Comprehensive Eye Checkup</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="goToStep(2)">Proceed to Select Doctor →</button>
+                    </div>
+                </div>
+
+                <div id="wizardStep2" style="display: none;">
+                    <div class="form-group">
+                        <label>Choose Specialist Doctor *</label>
+                        <select class="form-control" id="bookingDoctor" onchange="generateAvailableSlots()"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Appointment Date * (OPD: 10:00 AM – 9:00 PM)</label>
+                        <input type="date" class="form-control" id="bookingDate" onchange="generateAvailableSlots()">
+                    </div>
+                    <div class="form-group">
+                        <label>Available Consultation Slot *</label>
+                        <div class="slot-grid" id="slotContainer"></div>
+                        <input type="hidden" id="selectedSlot" value="">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+                        <button class="btn btn-primary" onclick="validateStep2AndProceed()">Next: Patient Details →</button>
+                    </div>
+                </div>
+
+                <div id="wizardStep3" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Patient Full Name *</label>
+                            <input type="text" class="form-control" id="patientName" placeholder="Full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number (10 Digits) *</label>
+                            <input type="tel" class="form-control" id="patientPhone" placeholder="98XXXXXXXX" pattern="[0-9]{10}" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Age *</label>
+                            <input type="number" class="form-control" id="patientAge" placeholder="e.g. 58" min="1" max="115" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender *</label>
+                            <select class="form-control" id="patientGender">
+                                <option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Symptoms / Chief Complaints</label>
+                        <input type="text" class="form-control" id="patientSymptoms" placeholder="Symptoms / complaints">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+                        <button class="btn btn-accent" onclick="confirmAppointmentBooking()">Confirm & Generate Slip ✓</button>
+                    </div>
+                </div>
+
+                <div id="wizardStep4" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 38px; color: var(--success); margin-bottom: 6px;"><i class="fa-solid fa-circle-check"></i></div>
+                        <h4 style="font-size: 20px; font-weight: 800; color: var(--brand-primary);">Appointment Confirmed!</h4>
+                    </div>
+                    <div id="printableSlip" class="slip-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-light); padding-bottom: 12px; margin-bottom: 14px;">
+                            <h4 style="font-size: 15px; font-weight: 800; color: var(--brand-primary);">NETRADARPAN HOSPITAL</h4>
+                            <div style="background: var(--brand-light); color: var(--brand-primary); padding: 4px 10px; border-radius: 4px; font-family: monospace; font-weight: 700;" id="slipRefCode">ND-2026-XXXX</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Patient Name</strong><span id="slipPatientName" style="font-weight: 700;">-</span></div>
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Phone</strong><span id="slipPatientPhone">-</span></div>
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Doctor</strong><span id="slipDoctorName" style="font-weight: 700; color: var(--brand-primary);">-</span></div>
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Specialty</strong><span id="slipSpecialty">-</span></div>
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Date & Slot</strong><span id="slipDateTime" style="font-weight: 700; color: var(--brand-crimson);">-</span></div>
+                            <div><strong style="color: var(--text-muted); display: block; font-size: 11px;">Location</strong><span id="slipBranch">1, Jagadhatripally, Bhadreswar</span></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        <button class="btn btn-outline" onclick="window.print()" style="flex: 1;"><i class="fa-solid fa-print"></i> Print Slip</button>
+                        <button class="btn btn-primary" onclick="closeModals()" style="flex: 1;">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-box" style="max-width: 850px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-shield" style="color: var(--brand-primary);"></i> Staff / Admin Dashboard</h3>
+                <button class="modal-close" onclick="closeModals()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="adminLoginSection">
+                    <div style="max-width: 360px; margin: 20px auto; text-align: center;">
+                        <div style="font-size: 32px; color: var(--brand-primary); margin-bottom: 10px;"><i class="fa-solid fa-lock"></i></div>
+                        <h4>Hospital Staff Access</h4>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter PIN (Demo: <strong>admin123</strong>)</p>
+                        <div class="form-group"><input type="password" id="adminPin" class="form-control" placeholder="Enter Access PIN"></div>
+                        <button class="btn btn-primary" onclick="authenticateAdmin()" style="width: 100%;">Unlock Dashboard</button>
+                    </div>
+                </div>
+                <div id="adminDashboardSection" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h4>Live Appointments Queue</h4>
+                        <button class="btn btn-secondary" onclick="logoutAdmin()">Lock</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                            <thead>
+                                <tr style="background: #f8fafc; text-align: left; border-bottom: 1px solid var(--brand-border);">
+                                    <th style="padding: 8px;">Ref ID</th><th style="padding: 8px;">Patient</th><th style="padding: 8px;">Doctor</th><th style="padding: 8px;">Slot</th><th style="padding: 8px;">Status</th><th style="padding: 8px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminAppointmentsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="toast"><i class="fa-solid fa-circle-check"></i> <span id="toastMessage">Done</span></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            searchPatientAppointments();
+        });
+    </script>
+</body>
+</html>
