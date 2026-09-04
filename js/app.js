@@ -1,139 +1,140 @@
 /* ==========================================================================
-   NETRADARPAN HOSPITAL - MASTER JAVASCRIPT ENGINE
+   NETRADARPAN HOSPITAL - MASTER JAVASCRIPT ENGINE (REST API / SUPABASE INTEGRATED)
    Includes: Appointment Booking Wizard, Doctor Catalog, Patient Portal,
-   Feedback System, Admin Queue Manager, Toast Alerts
+   Feedback System, Dynamic Gallery, CSR Camps, Milestones & Admin Queue Manager
    ========================================================================== */
 
-// 1. DOCTOR DATA CATALOG
-const DOCTORS = [
-    {
-        id: 'doc-1',
-        name: 'Dr. Manas Kr. Pal',
-        specialty: 'Cataract',
-        deptLabel: 'Consultant Eye Surgeon',
-        degrees: 'M.B.B.S, M.S. (Hons), D.O. (RIO), M.S. (OPHTHAL)',
-        regNo: '59053 (WBMC)',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Mon, Wed, Fri (10:00 AM – 2:00 PM)',
-        slots: ['10:00 AM', '10:45 AM', '11:30 AM', '12:15 PM', '01:00 PM', '01:30 PM']
-    },
-    {
-        id: 'doc-2',
-        name: 'Dr. Avijit Roy',
-        specialty: 'Cataract',
-        deptLabel: 'Consultant Eye Surgeon',
-        degrees: 'M.B.B.S. (NRS), M.S. (Eye) NRS',
-        regNo: 'WBMC 76886',
-        email: 'dravijitroy1960@gmail.com',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Tue, Thu, Sat (10:30 AM – 3:30 PM)',
-        slots: ['10:30 AM', '11:15 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM']
-    },
-    {
-        id: 'doc-3',
-        name: 'Dr. Anamika Paul',
-        specialty: 'Glaucoma',
-        deptLabel: 'Fellow in Glaucoma',
-        degrees: 'M.B.B.S (SSKM), M.S (R.I.O)',
-        regNo: '80637 (WBMC)',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Every Thursday (6:00 PM – 8:00 PM) (By Appointment)',
-        slots: ['06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM']
-    },
-    {
-        id: 'doc-4',
-        name: 'Dr. Q Shehnaz Waheed',
-        specialty: 'Cornea',
-        deptLabel: 'Eye Surgeon',
-        degrees: 'M.B.B.S, M.S (K.O.L)',
-        regNo: 'WBMC 67494',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Mon, Wed, Fri (2:00 PM – 6:00 PM)',
-        slots: ['02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM']
-    },
-    {
-        id: 'doc-6',
-        name: 'Dr. Abhisek Chaubey',
-        specialty: 'Pediatric',
-        deptLabel: 'Consultant Eye Surgeon',
-        degrees: 'MBBS, MS',
-        regNo: 'WBMC 67997',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Every Thursday (11:00 AM – 4:00 PM)',
-        slots: ['11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM']
-    },
-    {
-        id: 'doc-7',
-        name: 'Opt. Kanchan Chatterjee',
-        specialty: 'Senior Optometrist',
-        deptLabel: 'Senior Optometrist',
-        degrees: 'Primary Eye Check-up & Refraction Contact Lens Assessment & Training Based Practice',
-        regNo: '',
-        email: '',
-        branch: 'Bhadreswar Main Hospital',
-        timing: 'Mon-Sun (10:00 AM – 9:00 PM)',
-        slots: []
-    }
-];
+const API_BASE = '/api';
 
-// 2. APPOINTMENTS STORE (LocalStorage)
-let appointments = JSON.parse(localStorage.getItem('netradarpan_appointments')) || [
-    {
-        reference: 'ND-2026-10482',
-        patientName: 'Subhas Chandra Das',
-        patientPhone: '9830011223',
-        patientAge: 62,
-        patientGender: 'Male',
-        doctorName: 'Dr. Manas Kr. Pal',
-        specialty: 'Cataract',
-        appointmentDate: '2026-09-02',
-        slotTime: '11:30 AM',
-        branch: '1, Jagadhatripally, Bhadreswar',
-        status: 'confirmed',
-        symptoms: 'Blurred vision in right eye for 3 months',
-        createdDate: '2026-08-30'
-    }
-];
+// GLOBAL DATA STORES
+let DOCTORS = [];
+let appointments = [];
+let patientFeedbacks = [];
+let galleryItems = [];
+let achievementItems = [];
+let campItems = [];
 
-function saveAppointments() {
-    localStorage.setItem('netradarpan_appointments', JSON.stringify(appointments));
-    updateAdminStats();
+// ==========================================================================
+// 1. DATA FETCHING & SYNCHRONIZATION WITH EXPRESS BACKEND
+// ==========================================================================
+async function fetchDoctors() {
+    try {
+        const res = await fetch(`${API_BASE}/doctors`);
+        if (res.ok) {
+            DOCTORS = await res.json();
+            renderDoctors('all');
+        }
+    } catch (err) {
+        console.error('Error loading doctors:', err);
+    }
 }
 
-// 3. FEEDBACK DATA STORE (LocalStorage)
-let patientFeedbacks = JSON.parse(localStorage.getItem('netradarpan_feedbacks')) || [
-    {
-        name: 'Bijoy Kumar Ghosh',
-        rating: 5,
-        service: 'Cataract Phaco Surgery',
-        comment: 'I had my cataract surgery performed under Dr. Manas Kr. Pal. The painless micro-incision procedure and caring nursing staff at Bhadreswar gave me crystal clear vision back. Highly recommended!',
-        date: '2026-08-15'
-    },
-    {
-        name: 'Sunita Banerjee',
-        rating: 5,
-        service: 'Ayushman Bharat Beneficiary',
-        comment: 'Completely cashless and dignified eye treatment under the Ayushman Bharat PM-JAY desk. From registration to post-op drops, everything was handled smoothly.',
-        date: '2026-08-10'
-    },
-    {
-        name: 'Pranab Mukherjee',
-        rating: 5,
-        service: 'Glaucoma Diagnostics',
-        comment: 'Very advanced computerized perimetry and IOP machines. The doctors take time to explain reports in simple terms.',
-        date: '2026-07-28'
+async function fetchAppointments(query = '') {
+    try {
+        const res = await fetch(`${API_BASE}/appointments${query ? '?query=' + encodeURIComponent(query) : ''}`);
+        if (res.ok) {
+            appointments = await res.json();
+            // Standardize field names for UI
+            appointments = appointments.map(a => ({
+                reference: a.reference,
+                patientName: a.patient_name || a.patientName,
+                patientPhone: a.patient_phone || a.patientPhone,
+                patientAge: a.patient_age || a.patientAge,
+                patientGender: a.patient_gender || a.patientGender,
+                doctorName: a.doctor_name || a.doctorName,
+                specialty: a.specialty,
+                appointmentDate: a.appointment_date || a.appointmentDate,
+                slotTime: a.slot_time || a.slotTime,
+                branch: a.branch,
+                status: a.status,
+                symptoms: a.symptoms,
+                createdDate: a.created_at ? a.created_at.split('T')[0] : ''
+            }));
+            updateAdminStats();
+            renderAdminAppointments();
+        }
+    } catch (err) {
+        console.error('Error fetching appointments:', err);
     }
-];
-
-function saveFeedbacks() {
-    localStorage.setItem('netradarpan_feedbacks', JSON.stringify(patientFeedbacks));
 }
 
-// 4. FEEDBACK RENDERING & SUBMISSION
+async function fetchFeedbacks() {
+    try {
+        const res = await fetch(`${API_BASE}/feedbacks`);
+        if (res.ok) {
+            patientFeedbacks = await res.json();
+            renderFeedbacks();
+        }
+    } catch (err) {
+        console.error('Error loading feedbacks:', err);
+    }
+}
+
+async function fetchGallery() {
+    try {
+        const res = await fetch(`${API_BASE}/gallery`);
+        if (res.ok) {
+            const raw = await res.json();
+            galleryItems = raw.map(g => ({
+                id: g.id,
+                title: g.title,
+                category: g.category,
+                imgUrl: g.img_url || g.imgUrl,
+                description: g.description
+            }));
+            renderGallery();
+            renderAdminGallery();
+        }
+    } catch (err) {
+        console.error('Error loading gallery:', err);
+    }
+}
+
+async function fetchAchievements() {
+    try {
+        const res = await fetch(`${API_BASE}/achievements`);
+        if (res.ok) {
+            const raw = await res.json();
+            achievementItems = raw.map(a => ({
+                id: a.id,
+                title: a.title,
+                number: a.number,
+                description: a.description,
+                driveUrl: a.drive_url || a.driveUrl
+            }));
+            renderAchievements();
+            renderAdminAchievements();
+        }
+    } catch (err) {
+        console.error('Error loading achievements:', err);
+    }
+}
+
+async function fetchCamps() {
+    try {
+        const res = await fetch(`${API_BASE}/camps`);
+        if (res.ok) {
+            const raw = await res.json();
+            campItems = raw.map(c => ({
+                id: c.id,
+                title: c.title,
+                location: c.location,
+                date: c.date,
+                patients: c.patients,
+                details: c.details,
+                driveUrl: c.drive_url || c.driveUrl
+            }));
+            renderCamps();
+            renderAdminCamps();
+        }
+    } catch (err) {
+        console.error('Error loading camps:', err);
+    }
+}
+
+// ==========================================================================
+// 2. FEEDBACK RENDERING & SUBMISSION
+// ==========================================================================
 function renderFeedbacks() {
     const container = document.getElementById('feedbackGridContainer');
     if (!container) return;
@@ -143,7 +144,7 @@ function renderFeedbacks() {
         for (let i = 1; i <= 5; i++) {
             starsHtml += `<i class="fa-solid fa-star ${i <= f.rating ? 'active' : ''}" style="color: ${i <= f.rating ? 'var(--brand-amber)' : '#cbd5e1'};"></i> `;
         }
-        const initials = f.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+        const initials = f.name ? f.name.split(' ').map(n => n[0]).join('').substring(0, 2) : 'PT';
 
         return `
             <div class="feedback-card">
@@ -178,34 +179,40 @@ function setStarRating(rating) {
     });
 }
 
-function handleFeedbackSubmit(e) {
+async function handleFeedbackSubmit(e) {
     e.preventDefault();
-    const name = document.getElementById('fbName').value.trim();
-    const service = document.getElementById('fbService').value;
-    const comment = document.getElementById('fbComment').value.trim();
+    const name = document.getElementById('fbName')?.value.trim();
+    const service = document.getElementById('fbService')?.value;
+    const comment = document.getElementById('fbComment')?.value.trim();
 
     if (!name || !comment) {
         showToast('Please enter your name and feedback comments.', 'error');
         return;
     }
 
-    const newFeedback = {
-        name,
-        service,
-        comment,
-        rating: selectedRating,
-        date: new Date().toISOString().split('T')[0]
-    };
+    try {
+        const res = await fetch(`${API_BASE}/feedbacks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, service, comment, rating: selectedRating })
+        });
 
-    patientFeedbacks.unshift(newFeedback);
-    saveFeedbacks();
-    renderFeedbacks();
-    document.getElementById('feedbackForm').reset();
-    setStarRating(5);
-    showToast('Thank you! Your feedback has been published.', 'success');
+        if (res.ok) {
+            await fetchFeedbacks();
+            document.getElementById('feedbackForm').reset();
+            setStarRating(5);
+            showToast('Thank you! Your feedback has been published.', 'success');
+        } else {
+            showToast('Failed to save feedback.', 'error');
+        }
+    } catch (err) {
+        showToast('Network error while posting feedback.', 'error');
+    }
 }
 
-// 5. APPOINTMENT BOOKING WIZARD LOGIC
+// ==========================================================================
+// 3. APPOINTMENT BOOKING WIZARD LOGIC
+// ==========================================================================
 function openBookingWizard(prefilledDoctorId = null, prefilledSpecialty = null) {
     closeModals();
     const modal = document.getElementById('bookingModal');
@@ -246,8 +253,10 @@ function updateDoctorDropdown() {
         ? DOCTORS
         : DOCTORS.filter(d => d.specialty === specialty);
 
-    docSelect.innerHTML = (matchedDocs.length > 0 ? matchedDocs : DOCTORS).map(d => `
-        <option value="${d.id}">${d.name} (${d.deptLabel})</option>
+    const list = matchedDocs.length > 0 ? matchedDocs : DOCTORS;
+
+    docSelect.innerHTML = list.map(d => `
+        <option value="${d.id}">${d.name} (${d.dept_label || d.deptLabel || 'Eye Specialist'})</option>
     `).join('');
 
     generateAvailableSlots();
@@ -267,7 +276,9 @@ function generateAvailableSlots() {
         .filter(a => a.doctorName === doc.name && a.appointmentDate === selectedDate && a.status !== 'cancelled')
         .map(a => a.slotTime);
 
-    slotContainer.innerHTML = doc.slots.map(slot => {
+    const slots = doc.slots || [];
+
+    slotContainer.innerHTML = slots.map(slot => {
         const isBooked = bookedSlots.includes(slot);
         return `
             <button type="button" 
@@ -318,13 +329,13 @@ function validateStep2AndProceed() {
     goToStep(3);
 }
 
-function confirmAppointmentBooking() {
+async function confirmAppointmentBooking() {
     const name = document.getElementById('patientName')?.value.trim();
     const phone = document.getElementById('patientPhone')?.value.trim();
     const age = document.getElementById('patientAge')?.value.trim();
     const gender = document.getElementById('patientGender')?.value;
     const symptoms = document.getElementById('patientSymptoms')?.value.trim();
-    const branch = document.getElementById('bookingBranch')?.value || '1, Jagadhatripally, Bhadreswar';
+    const branch = document.getElementById('bookingBranch')?.value || '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar';
     const specialty = document.getElementById('bookingSpecialty')?.value;
     const doctorId = document.getElementById('bookingDoctor')?.value;
     const date = document.getElementById('bookingDate')?.value;
@@ -340,48 +351,61 @@ function confirmAppointmentBooking() {
     }
 
     const doc = DOCTORS.find(d => d.id === doctorId);
-    const refCode = `ND-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+    const doctorName = doc ? doc.name : 'Consultant Ophthalmologist';
 
-    const newAppointment = {
-        reference: refCode,
-        patientName: name,
-        patientPhone: phone,
-        patientAge: parseInt(age, 10),
-        patientGender: gender,
-        doctorName: doc ? doc.name : 'Consultant Ophthalmologist',
-        specialty: specialty,
-        appointmentDate: date,
-        slotTime: slot,
-        branch: branch,
-        status: 'confirmed',
-        symptoms: symptoms || 'General OPD Consult',
-        createdDate: new Date().toISOString().split('T')[0]
-    };
+    try {
+        const res = await fetch(`${API_BASE}/appointments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                patientName: name,
+                patientPhone: phone,
+                patientAge: age,
+                patientGender: gender,
+                doctorName: doctorName,
+                specialty: specialty,
+                appointmentDate: date,
+                slotTime: slot,
+                branch: branch,
+                symptoms: symptoms
+            })
+        });
 
-    appointments.unshift(newAppointment);
-    saveAppointments();
+        if (res.ok) {
+            const data = await res.json();
+            const refCode = data.reference;
 
-    // Populate Printable Slip
-    const refEl = document.getElementById('slipRefCode');
-    if (refEl) refEl.innerText = refCode;
-    const pName = document.getElementById('slipPatientName');
-    if (pName) pName.innerText = name;
-    const pPhone = document.getElementById('slipPatientPhone');
-    if (pPhone) pPhone.innerText = phone;
-    const pDoc = document.getElementById('slipDoctorName');
-    if (pDoc) pDoc.innerText = newAppointment.doctorName;
-    const pSpec = document.getElementById('slipSpecialty');
-    if (pSpec) pSpec.innerText = specialty;
-    const pDt = document.getElementById('slipDateTime');
-    if (pDt) pDt.innerText = `${date} at ${slot}`;
-    const pBr = document.getElementById('slipBranch');
-    if (pBr) pBr.innerText = branch;
+            await fetchAppointments();
 
-    goToStep(4);
-    showToast('Appointment confirmed! Registration slip ready.', 'success');
+            // Populate Printable Slip
+            const refEl = document.getElementById('slipRefCode');
+            if (refEl) refEl.innerText = refCode;
+            const pName = document.getElementById('slipPatientName');
+            if (pName) pName.innerText = name;
+            const pPhone = document.getElementById('slipPatientPhone');
+            if (pPhone) pPhone.innerText = phone;
+            const pDoc = document.getElementById('slipDoctorName');
+            if (pDoc) pDoc.innerText = doctorName;
+            const pSpec = document.getElementById('slipSpecialty');
+            if (pSpec) pSpec.innerText = specialty;
+            const pDt = document.getElementById('slipDateTime');
+            if (pDt) pDt.innerText = `${date} at ${slot}`;
+            const pBr = document.getElementById('slipBranch');
+            if (pBr) pBr.innerText = branch;
+
+            goToStep(4);
+            showToast('Appointment confirmed! Registration slip ready.', 'success');
+        } else {
+            showToast('Failed to create appointment booking.', 'error');
+        }
+    } catch (err) {
+        showToast('Error connecting to backend server.', 'error');
+    }
 }
 
-// 6. PATIENT PORTAL SEARCH
+// ==========================================================================
+// 4. PATIENT PORTAL SEARCH
+// ==========================================================================
 function openPatientPortal() {
     closeModals();
     const modal = document.getElementById('portalModal');
@@ -393,21 +417,15 @@ function openPatientPortal() {
     }
 }
 
-function searchPatientAppointments() {
+async function searchPatientAppointments() {
     const input = document.getElementById('lookupQuery');
     const container = document.getElementById('patientResultsContainer');
     if (!container) return;
 
-    const query = input ? input.value.trim().toLowerCase() : '';
-    let matched = appointments;
+    const query = input ? input.value.trim() : '';
 
-    if (query) {
-        matched = appointments.filter(a =>
-            a.patientPhone.includes(query) ||
-            a.reference.toLowerCase().includes(query) ||
-            a.patientName.toLowerCase().includes(query)
-        );
-    }
+    await fetchAppointments(query);
+    const matched = appointments;
 
     if (matched.length === 0) {
         container.innerHTML = `
@@ -446,14 +464,20 @@ function searchPatientAppointments() {
     `).join('');
 }
 
-function cancelAppointment(ref) {
+async function cancelAppointment(ref) {
     if (confirm(`Are you sure you want to cancel appointment ${ref}?`)) {
-        const app = appointments.find(a => a.reference === ref);
-        if (app) {
-            app.status = 'cancelled';
-            saveAppointments();
-            searchPatientAppointments();
-            showToast(`Appointment ${ref} cancelled.`, 'success');
+        try {
+            const res = await fetch(`${API_BASE}/appointments/${ref}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'cancelled' })
+            });
+            if (res.ok) {
+                await searchPatientAppointments();
+                showToast(`Appointment ${ref} cancelled.`, 'success');
+            }
+        } catch (err) {
+            showToast('Error cancelling appointment.', 'error');
         }
     }
 }
@@ -474,22 +498,35 @@ function printSingleSlip(ref) {
     goToStep(4);
 }
 
-// 7. ADMIN DASHBOARD (PIN: admin123)
+// ==========================================================================
+// 5. ADMIN DASHBOARD
+// ==========================================================================
 function openAdminModal() {
     closeModals();
     const modal = document.getElementById('adminModal');
     if (modal) modal.classList.add('active');
 }
 
-function authenticateAdmin() {
+async function authenticateAdmin() {
     const pin = document.getElementById('adminPin')?.value;
-    if (pin === 'admin123' || pin === 'admin') {
-        document.getElementById('adminLoginSection').style.display = 'none';
-        document.getElementById('adminDashboardSection').style.display = 'block';
-        renderAdminAppointments();
-        updateAdminStats();
-    } else {
-        showToast('Invalid PIN. Use "admin123" for demo.', 'error');
+    try {
+        const res = await fetch(`${API_BASE}/auth/admin-login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pin })
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('adminLoginSection').style.display = 'none';
+            document.getElementById('adminDashboardSection').style.display = 'block';
+            await fetchAppointments();
+            renderAdminAppointments();
+            updateAdminStats();
+        } else {
+            showToast('Invalid PIN access code.', 'error');
+        }
+    } catch (err) {
+        showToast('Authentication error.', 'error');
     }
 }
 
@@ -539,13 +576,19 @@ function renderAdminAppointments() {
     `).join('');
 }
 
-function updateAppointmentStatus(ref, newStatus) {
-    const app = appointments.find(a => a.reference === ref);
-    if (app) {
-        app.status = newStatus;
-        saveAppointments();
-        renderAdminAppointments();
-        showToast(`Appointment ${ref} updated to ${newStatus}.`, 'success');
+async function updateAppointmentStatus(ref, newStatus) {
+    try {
+        const res = await fetch(`${API_BASE}/appointments/${ref}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) {
+            await fetchAppointments();
+            showToast(`Appointment ${ref} updated to ${newStatus}.`, 'success');
+        }
+    } catch (err) {
+        showToast('Failed to update status.', 'error');
     }
 }
 
@@ -563,7 +606,9 @@ function exportAppointmentsCSV() {
     a.click();
 }
 
-// 8. DOCTOR DIRECTORY
+// ==========================================================================
+// 6. DOCTOR DIRECTORY RENDERING
+// ==========================================================================
 function renderDoctors(filter = 'all') {
     const container = document.getElementById('doctorContainer');
     if (!container) return;
@@ -579,13 +624,13 @@ function renderDoctors(filter = 'all') {
                     <i class="fa-solid fa-user-doctor"></i>
                 </div>
                 <h4>${doc.name}</h4>
-                <span class="doctor-dept">${doc.deptLabel}</span>
+                <span class="doctor-dept">${doc.dept_label || doc.deptLabel || 'Consultant Surgeon'}</span>
             </div>
             <div class="doctor-info">
-                <div class="doctor-degrees">${doc.degrees}</div>
-                ${doc.regNo ? `
+                <div class="doctor-degrees">${doc.degrees || ''}</div>
+                ${(doc.reg_no || doc.regNo) ? `
                     <div style="border-top: 1px solid var(--brand-border); padding-top: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-                        <i class="fa-solid fa-id-card" style="color: var(--brand-crimson); margin-right: 6px;"></i> Reg. No: <strong style="color: var(--text-heading);">${doc.regNo}</strong>
+                        <i class="fa-solid fa-id-card" style="color: var(--brand-crimson); margin-right: 6px;"></i> Reg. No: <strong style="color: var(--text-heading);">${doc.reg_no || doc.regNo}</strong>
                     </div>
                 ` : '<div style="border-top: 1px solid var(--brand-border); padding-top: 10px;"></div>'}
                 ${doc.email ? `
@@ -610,7 +655,321 @@ function filterDoctors(category, btn) {
     renderDoctors(category);
 }
 
-// 9. GENERAL UTILITIES
+// ==========================================================================
+// 7. DYNAMIC GALLERY MANAGMENT
+// ==========================================================================
+let tempUploadedGalleryDataUrl = '';
+
+function previewGalleryFile(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            tempUploadedGalleryDataUrl = e.target.result;
+            const prevContainer = document.getElementById('admGalPreviewContainer');
+            const prevImg = document.getElementById('admGalPreviewImg');
+            if (prevContainer && prevImg) {
+                prevImg.src = tempUploadedGalleryDataUrl;
+                prevContainer.style.display = 'block';
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+async function addGalleryItem(title, category, imgUrl, description) {
+    try {
+        const res = await fetch(`${API_BASE}/gallery`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, category, imgUrl, description })
+        });
+        if (res.ok) {
+            await fetchGallery();
+            showToast('Gallery image added successfully!', 'success');
+        }
+    } catch (err) {
+        showToast('Error adding gallery image.', 'error');
+    }
+}
+
+async function deleteGalleryItem(id) {
+    try {
+        const res = await fetch(`${API_BASE}/gallery/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await fetchGallery();
+            showToast('Gallery item deleted.', 'success');
+        }
+    } catch (err) {
+        showToast('Error deleting gallery item.', 'error');
+    }
+}
+
+function renderGallery() {
+    const container = document.getElementById('galleryContainer');
+    if (!container) return;
+
+    container.innerHTML = galleryItems.map(item => `
+        <div class="specialty-card-img" style="background: white; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--brand-border); box-shadow: var(--shadow-sm); transition: transform 0.2s ease;">
+            <div style="height: 190px; overflow: hidden; background: #1e2460; position: relative;">
+                <img src="${item.imgUrl}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='images/hospital.jpg'">
+                <span style="position: absolute; top: 10px; right: 10px; background: var(--brand-crimson); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">${item.category}</span>
+            </div>
+            <div style="padding: 20px;">
+                <h3 style="font-size: 16px; font-weight: 800; color: var(--brand-primary); margin-bottom: 8px;">${item.title}</h3>
+                <p style="font-size: 13px; color: var(--text-body); line-height: 1.55;">${item.description}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ==========================================================================
+// 8. DYNAMIC ACHIEVEMENTS / MILESTONES
+// ==========================================================================
+async function addAchievement(title, number, description, driveUrl) {
+    try {
+        const res = await fetch(`${API_BASE}/achievements`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, number, description, driveUrl })
+        });
+        if (res.ok) {
+            await fetchAchievements();
+            showToast('Achievement milestone added!', 'success');
+        }
+    } catch (err) {
+        showToast('Error adding achievement.', 'error');
+    }
+}
+
+async function deleteAchievement(id) {
+    try {
+        const res = await fetch(`${API_BASE}/achievements/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await fetchAchievements();
+            showToast('Achievement deleted.', 'success');
+        }
+    } catch (err) {
+        showToast('Error deleting achievement.', 'error');
+    }
+}
+
+function renderAchievements() {
+    const container = document.getElementById('achievementsContainer');
+    if (!container) return;
+
+    container.innerHTML = achievementItems.map(item => `
+        <div class="csr-project-card">
+            <div style="font-size: 28px; font-weight: 800; color: var(--brand-crimson); margin-bottom: 6px;">${item.number}</div>
+            <h3 style="font-size: 17px; font-weight: 800; color: var(--brand-primary); margin-bottom: 8px;">${item.title}</h3>
+            <p style="font-size: 13.5px; color: var(--text-body); line-height: 1.55; margin-bottom: 10px;">${item.description}</p>
+            ${item.driveUrl ? `
+                <div style="margin-top: 10px; border-top: 1px dashed var(--brand-border); padding-top: 8px;">
+                    <a href="${item.driveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="font-size: 11.5px; padding: 4px 10px; border-color: var(--brand-primary); color: var(--brand-primary); text-decoration: none;">
+                        <i class="fa-brands fa-google-drive" style="color: #0f9d58;"></i> View Drive Certificate / Link &rarr;
+                    </a>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// ==========================================================================
+// 9. DYNAMIC CSR CAMPS
+// ==========================================================================
+async function addCamp(title, location, date, patients, details, driveUrl) {
+    try {
+        const res = await fetch(`${API_BASE}/camps`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, location, date, patients, details, driveUrl })
+        });
+        if (res.ok) {
+            await fetchCamps();
+            showToast('Camp schedule added to CSR section!', 'success');
+        }
+    } catch (err) {
+        showToast('Error adding camp schedule.', 'error');
+    }
+}
+
+async function deleteCamp(id) {
+    try {
+        const res = await fetch(`${API_BASE}/camps/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await fetchCamps();
+            showToast('Camp schedule removed.', 'success');
+        }
+    } catch (err) {
+        showToast('Error removing camp.', 'error');
+    }
+}
+
+function renderCamps() {
+    const section = document.getElementById('dynamicCampsSection');
+    const container = document.getElementById('dynamicCampsContainer');
+    if (!container) return;
+
+    if (campItems.length > 0 && section) {
+        section.style.display = 'block';
+    }
+
+    container.innerHTML = campItems.map(camp => `
+        <div class="csr-project-card" style="background: white; border-top: 4px solid var(--brand-crimson);">
+            <div style="font-size: 24px; color: var(--brand-crimson); margin-bottom: 8px;"><i class="fa-solid fa-tent"></i></div>
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--brand-primary); margin-bottom: 6px;">${camp.title}</h3>
+            <p style="font-size: 12.5px; color: var(--brand-amber); font-weight: 700; margin-bottom: 6px;"><i class="fa-solid fa-location-dot"></i> ${camp.location} | <i class="fa-solid fa-calendar-day"></i> ${camp.date}</p>
+            <p style="font-size: 13px; color: var(--text-body); margin-bottom: 12px; line-height: 1.5;">${camp.details}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <span style="font-size: 11px; font-weight: 700; background: var(--brand-light); color: var(--brand-primary); padding: 4px 10px; border-radius: 4px;"><i class="fa-solid fa-users"></i> ${camp.patients}</span>
+                ${camp.driveUrl ? `
+                    <a href="${camp.driveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="font-size: 11.5px; padding: 4px 10px; border-color: var(--brand-primary); color: var(--brand-primary); text-decoration: none;">
+                        <i class="fa-brands fa-google-drive" style="color: #0f9d58;"></i> View Drive Document &rarr;
+                    </a>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// ==========================================================================
+// 10. ADMIN DASHBOARD TAB SWITCHING & HANDLERS
+// ==========================================================================
+function switchAdminTab(tabName, btn) {
+    document.querySelectorAll('.admin-tab-btn').forEach(b => {
+        b.classList.remove('btn-primary', 'active');
+        b.classList.add('btn-secondary');
+    });
+    if (btn) {
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-primary', 'active');
+    }
+
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+
+    if (tabName === 'appointments') {
+        document.getElementById('adminTabAppointments').style.display = 'block';
+        renderAdminAppointments();
+    } else if (tabName === 'gallery') {
+        document.getElementById('adminTabGallery').style.display = 'block';
+        renderAdminGallery();
+    } else if (tabName === 'camps') {
+        document.getElementById('adminTabCamps').style.display = 'block';
+        renderAdminCamps();
+    } else if (tabName === 'achievements') {
+        document.getElementById('adminTabAchievements').style.display = 'block';
+        renderAdminAchievements();
+    }
+}
+
+function renderAdminGallery() {
+    const container = document.getElementById('adminGalleryList');
+    if (!container) return;
+
+    if (galleryItems.length === 0) {
+        container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted);">No custom gallery images uploaded.</p>';
+        return;
+    }
+
+    container.innerHTML = galleryItems.map(item => `
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border: 1px solid var(--brand-border); border-radius: 6px; font-size: 13px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${item.imgUrl}" alt="${item.title}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='images/hospital.jpg'">
+                <div>
+                    <strong>${item.title}</strong> <span style="font-size: 11px; background: var(--brand-light); color: var(--brand-primary); padding: 2px 6px; border-radius: 4px;">${item.category}</span>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">${item.description}</div>
+                </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="deleteGalleryItem('${item.id}')" style="color: var(--danger); border-color: var(--danger);"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+    `).join('');
+}
+
+function handleAdminAddGallery(e) {
+    e.preventDefault();
+    const title = document.getElementById('admGalTitle')?.value;
+    const category = document.getElementById('admGalCategory')?.value;
+    const urlInput = document.getElementById('admGalUrl') ? document.getElementById('admGalUrl').value : '';
+    const desc = document.getElementById('admGalDesc')?.value;
+
+    const imgUrl = tempUploadedGalleryDataUrl || urlInput || 'images/hospital.jpg';
+
+    addGalleryItem(title, category, imgUrl, desc);
+    tempUploadedGalleryDataUrl = '';
+    const prevContainer = document.getElementById('admGalPreviewContainer');
+    if (prevContainer) prevContainer.style.display = 'none';
+    const fileInput = document.getElementById('admGalFile');
+    if (fileInput) fileInput.value = '';
+    e.target.reset();
+}
+
+function renderAdminCamps() {
+    const container = document.getElementById('adminCampsList');
+    if (!container) return;
+
+    if (campItems.length === 0) {
+        container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted);">No upcoming camps scheduled.</p>';
+        return;
+    }
+
+    container.innerHTML = campItems.map(camp => `
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border: 1px solid var(--brand-border); border-radius: 6px; font-size: 13px;">
+            <div>
+                <strong>${camp.title}</strong> • <span style="color: var(--brand-crimson); font-weight: 600;">${camp.location}</span>
+                <div style="font-size: 11.5px; color: var(--text-muted);">${camp.date} | ${camp.patients} ${camp.driveUrl ? '• <i class="fa-brands fa-google-drive" style="color: #0f9d58;"></i> Drive Link Attached' : ''}</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="deleteCamp('${camp.id}')" style="color: var(--danger); border-color: var(--danger);"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+    `).join('');
+}
+
+function handleAdminAddCamp(e) {
+    e.preventDefault();
+    const title = document.getElementById('admCampTitle')?.value;
+    const location = document.getElementById('admCampLocation')?.value;
+    const date = document.getElementById('admCampDate')?.value;
+    const patients = document.getElementById('admCampPatients')?.value;
+    const details = document.getElementById('admCampDetails')?.value;
+    const driveUrl = document.getElementById('admCampDriveUrl') ? document.getElementById('admCampDriveUrl').value : '';
+
+    addCamp(title, location, date, patients, details, driveUrl);
+    e.target.reset();
+}
+
+function renderAdminAchievements() {
+    const container = document.getElementById('adminAchievementsList');
+    if (!container) return;
+
+    if (achievementItems.length === 0) {
+        container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted);">No achievements listed.</p>';
+        return;
+    }
+
+    container.innerHTML = achievementItems.map(item => `
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border: 1px solid var(--brand-border); border-radius: 6px; font-size: 13px;">
+            <div>
+                <strong style="color: var(--brand-crimson);">${item.number}</strong> • <strong>${item.title}</strong>
+                <div style="font-size: 11.5px; color: var(--text-muted);">${item.description} ${item.driveUrl ? '• <i class="fa-brands fa-google-drive" style="color: #0f9d58;"></i> Drive Link Attached' : ''}</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="deleteAchievement('${item.id}')" style="color: var(--danger); border-color: var(--danger);"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+    `).join('');
+}
+
+function handleAdminAddAchievement(e) {
+    e.preventDefault();
+    const title = document.getElementById('admAchTitle')?.value;
+    const number = document.getElementById('admAchNumber')?.value;
+    const desc = document.getElementById('admAchDesc')?.value;
+    const driveUrl = document.getElementById('admAchDriveUrl') ? document.getElementById('admAchDriveUrl').value : '';
+
+    addAchievement(title, number, desc, driveUrl);
+    e.target.reset();
+}
+
+// ==========================================================================
+// 11. GENERAL UTILITIES
+// ==========================================================================
 function closeModals() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
 }
@@ -646,17 +1005,22 @@ function handleInquirySubmit(e) {
     e.target.reset();
 }
 
+// ==========================================================================
 // DOM INITIALIZATION
-document.addEventListener('DOMContentLoaded', () => {
-    renderDoctors('all');
-    renderFeedbacks();
-    updateAdminStats();
+// ==========================================================================
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initial fetch from backend API
+    await fetchDoctors();
+    await fetchAppointments();
+    await fetchFeedbacks();
+    await fetchGallery();
+    await fetchAchievements();
+    await fetchCamps();
 
     // Mobile dropdown toggle on click for touch devices
     document.querySelectorAll('.nav-item-dropdown > a').forEach(dropdownAnchor => {
         dropdownAnchor.addEventListener('click', function (e) {
             if (window.innerWidth <= 768) {
-                // If clicked on arrow or in mobile view, toggle menu if not already open
                 const parent = this.parentElement;
                 if (!parent.classList.contains('mobile-open')) {
                     e.preventDefault();
