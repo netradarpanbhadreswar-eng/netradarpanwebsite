@@ -1049,7 +1049,55 @@ window.onclick = function (event) {
 
 function toggleMobileNav() {
     const nav = document.getElementById('navLinks');
-    if (nav) nav.classList.toggle('show');
+    let overlay = document.getElementById('navOverlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'navOverlay';
+        overlay.className = 'nav-overlay';
+        overlay.onclick = toggleMobileNav;
+        document.body.appendChild(overlay);
+    }
+
+    if (nav && !nav.querySelector('.mobile-nav-header')) {
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'mobile-nav-header';
+        headerDiv.innerHTML = `
+            <div class="mobile-nav-brand">
+                <img src="img/logo.png" alt="Logo" onerror="this.style.display='none'">
+                <span>Netradarpan Menu</span>
+            </div>
+            <button class="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Close Menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        `;
+        nav.insertBefore(headerDiv, nav.firstChild);
+    }
+
+    const isOpen = nav ? (nav.classList.contains('mobile-open') || nav.classList.contains('show')) : false;
+
+    if (nav) {
+        if (isOpen) {
+            nav.classList.remove('mobile-open');
+            nav.classList.remove('show');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            nav.classList.add('mobile-open');
+            nav.classList.add('show');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    const menuBtnIcons = document.querySelectorAll('.mobile-menu-btn i');
+    menuBtnIcons.forEach(icon => {
+        if (!isOpen) {
+            icon.className = 'fa-solid fa-xmark';
+        } else {
+            icon.className = 'fa-solid fa-bars';
+        }
+    });
 }
 
 function showToast(message, type = 'success') {
@@ -1084,14 +1132,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     await fetchAchievements();
     await fetchCamps();
 
-    // Mobile dropdown toggle on click for touch devices
+    // Mobile navigation accordion toggle for dropdowns (<= 992px)
     document.querySelectorAll('.nav-item-dropdown > a').forEach(dropdownAnchor => {
         dropdownAnchor.addEventListener('click', function (e) {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 992) {
                 const parent = this.parentElement;
-                if (!parent.classList.contains('mobile-open')) {
+                const dropdownMenu = parent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
                     e.preventDefault();
-                    parent.classList.toggle('mobile-open');
+                    parent.classList.toggle('mobile-expanded');
+                }
+            }
+        });
+    });
+
+    // Auto-close mobile sidebar drawer when clicking links inside drawer
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        if (!link.parentElement.classList.contains('nav-item-dropdown')) {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    const nav = document.getElementById('navLinks');
+                    if (nav && (nav.classList.contains('mobile-open') || nav.classList.contains('show'))) {
+                        toggleMobileNav();
+                    }
+                }
+            });
+        }
+    });
+
+    document.querySelectorAll('.dropdown-menu a').forEach(subLink => {
+        subLink.addEventListener('click', () => {
+            if (window.innerWidth <= 992) {
+                const nav = document.getElementById('navLinks');
+                if (nav && (nav.classList.contains('mobile-open') || nav.classList.contains('show'))) {
+                    toggleMobileNav();
                 }
             }
         });
@@ -1125,4 +1199,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // Initialize Scroll Reveal Animations for sections on scroll
+    initScrollReveal();
 });
+
+// Initialize Scroll Reveal Animations for sections & cards
+function initScrollReveal() {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('section, .specialty-card, .doctor-card, .stat-card, .feature-card, .about-card, .csr-project-card, .footer-col').forEach(el => {
+            el.classList.add('revealed');
+        });
+        return;
+    }
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.1
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const targets = document.querySelectorAll('section:not(.sankara-hero), .specialty-card, .doctor-card, .stat-card, .feature-card, .about-card, .csr-project-card, .footer-col, .scroll-reveal');
+    targets.forEach(el => {
+        if (!el.classList.contains('revealed')) {
+            el.classList.add('scroll-reveal');
+            revealObserver.observe(el);
+        }
+    });
+}
+

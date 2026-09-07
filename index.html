@@ -111,105 +111,87 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <section class="hero" id="home">
-        <div class="hero-text">
-            <div class="hero-pill">
-                <i class="fa-solid fa-eye"></i> Dedicated to Removing Darkness Since 2009
-            </div>
-            <h1>
-                Advanced Eye Care <br>
-                <span>for Better Vision</span>
-            </h1>
-            <p>
-                Netradarpan Hospital combines modern ophthalmic technology, expert surgeons,
-                and compassionate care. From advanced Phaco cataract surgeries to primary eye check-ups & refraction,
-                we deliver high-precision vision care to our community.
-            </p>
-            <div class="hero-ctas">
-                <button class="btn btn-accent" onclick="openBookingWizard()"
-                    style="padding: 13px 26px; font-size: 15.5px;">
-                    <i class="fa-solid fa-calendar-plus"></i> Book Doctor Consultation
-                </button>
-                <a href="specialties.html" class="btn btn-outline" style="padding: 13px 22px; font-size: 15px;">
-                    <i class="fa-solid fa-stethoscope"></i> Explore Specialties
-                </a>
-                <a href="patient-portal.html" class="btn btn-secondary" style="padding: 13px 18px; font-size: 14.5px;">
-                    <i class="fa-solid fa-book-medical"></i> Patient Guide
-                </a>
-            </div>
+    <!-- HERO SECTION (Sankara Nethralaya Style) -->
+    <section class="hero sankara-hero" id="home">
+        <!-- Background Sparkle Vector Accents -->
+        <div class="hero-sparkle top-left-sparkle">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 0L23.5 16.5L40 20L23.5 23.5L20 40L16.5 23.5L0 20L16.5 16.5L20 0Z" fill="#0284c7" opacity="0.3"/>
+            </svg>
+        </div>
+        <div class="hero-sparkle top-right-sparkle">
+            <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+                <path d="M20 0L23.5 16.5L40 20L23.5 23.5L20 40L16.5 23.5L0 20L16.5 16.5L20 0Z" fill="#0284c7" opacity="0.4"/>
+            </svg>
         </div>
 
-        <div class="hero-card-side">
-            <div class="hero-clinical-card">
-                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
-                    <img src="images/logo.png" alt="Netradarpan Logo"
-                        style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%; border: 2px solid var(--brand-primary);"
-                        onerror="this.src='images/logo.jpg'">
-                    <div>
-                        <h3 style="font-size: 18px; font-weight: 800; color: var(--brand-primary);">Netradarpan Eye
-                            Hospital</h3>
-                        <p style="font-size: 12.5px; color: var(--text-muted);"><i
-                                class="fa-solid fa-location-dot text-crimson"></i> 148/1, R.B. Avenue Bye Lane,(Park
-                            Maidan), Govt.Colony, Bhadreswar</p>
-                    </div>
+        <div class="hero-container">
+            <!-- Left Text Content Column -->
+            <div class="hero-left animate-slide-up delay-1">
+                <div class="hero-hospital-tag">
+                    Netradarpan Eye Hospital
                 </div>
-
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 22px;">
-                    <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600;">
-                        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i> Micro-Incision Phaco
-                        Cataract Surgery (MICS)
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600;">
-                        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i> Primary Eye Check-up &
-                        Refraction (Optometry)
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600;">
-                        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i> Glaucoma Diagnostics &
-                        Computerized Perimetry
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600;">
-                        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i> Ayushman Bharat PM-JAY &
-                        Swasthya Sathi Desk
-                    </li>
-                </ul>
-
-                <div
-                    style="background: var(--brand-light); border-radius: var(--radius-sm); padding: 16px; text-align: center; border: 1px dashed var(--brand-indigo);">
-                    <div style="font-size: 13px; font-weight: 700; color: var(--brand-primary); margin-bottom: 6px;">
-                        OPD Timings: 10:00 AM - 9:00 PM
-                    </div>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                        Helpline: <strong>03335562702 / 6290670180</strong>
-                    </div>
-                    <button class="btn btn-primary" onclick="openBookingWizard()" style="width: 100%;">
-                        Book Priority OPD Slot &rarr;
+                
+                <h1 class="hero-main-title">
+                    The largest super speciality <br>
+                    <span class="text-highlight">Eye Care Hospital in Bhadreswar</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Serving the patients from all over the country and abroad with quality care and compassion.
+                </p>
+                
+                <div class="hero-action-row">
+                    <button class="btn-hero-primary" onclick="openBookingWizard()">
+                        Book Appointment <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
+
+                <!-- Floating Stats Strip Inside Left Hero -->
+                <div class="hero-stats-card animate-slide-up delay-3">
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-val">10+</div>
+                        <div class="hero-stat-lbl">Doctors</div>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-val">25+</div>
+                        <div class="hero-stat-lbl">Surgeries a day</div>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-val">1,500+</div>
+                        <div class="hero-stat-lbl">Patients a month</div>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-val">17+</div>
+                        <div class="hero-stat-lbl">Years of Care</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Right Hospital Building Image Frame Column -->
+            <div class="hero-right animate-slide-up delay-2">
+                <div class="hero-image-card">
+                    <img src="images/hospital-building.jpg" alt="Netradarpan Eye Hospital Building" class="hero-building-img" onerror="this.src='images/logo.png'">
+                    <div class="image-card-badge">
+                        <i class="fa-solid fa-hospital"></i> 148/1, R.B. Avenue Bye Lane, Bhadreswar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Dual Action Buttons at Bottom Center of Hero -->
+        <div class="hero-bottom-tabs animate-slide-up delay-4">
+            <a href="doctors.html" class="hero-tab-btn active">
+                <i class="fa-solid fa-user-doctor"></i> Find a Doctor
+            </a>
+            <a href="javascript:void(0)" onclick="openBookingWizard()" class="hero-tab-btn">
+                <i class="fa-solid fa-calendar-check"></i> Appointments
+            </a>
         </div>
     </section>
-
-    <!-- FLOATING STATS COUNTERS -->
-    <div class="stats-wrapper">
-        <div class="stats-card">
-            <div class="stat-item">
-                <div class="stat-number">10+</div>
-                <div class="stat-label">Specialist Doctors</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">100+</div>
-                <div class="stat-label">Patients Treated</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">20+</div>
-                <div class="stat-label">Successful Surgeries</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">17+</div>
-                <div class="stat-label">Years of Care (2009-2026)</div>
-            </div>
-        </div>
-    </div>
 
     <!-- CLINICAL SPECIALTIES (IMAGE CARDS, NO BOOK SLOT BUTTON) -->
     <section class="section" id="specialties">
