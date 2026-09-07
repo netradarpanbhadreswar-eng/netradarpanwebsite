@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS public.doctors (
     degrees TEXT,
     reg_no TEXT,
     email TEXT,
+    specializations JSONB NOT NULL DEFAULT '[]'::jsonb,
     branch TEXT NOT NULL DEFAULT '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
     timing TEXT NOT NULL,
     slots JSONB NOT NULL DEFAULT '[]'::jsonb,
@@ -118,14 +119,14 @@ CREATE POLICY "Allow full access on doctors" ON public.doctors FOR ALL USING (tr
 -- SEED DATA INSERTIONS
 -- ============================================================================
 
-INSERT INTO public.doctors (id, name, specialty, dept_label, degrees, reg_no, email, branch, timing, slots)
+INSERT INTO public.doctors (id, name, specialty, dept_label, degrees, reg_no, email, specializations, branch, timing, slots)
 VALUES 
-('doc-1', 'Dr. Manas Kr. Pal', 'Cataract', 'Consultant Eye Surgeon', 'M.B.B.S, M.S. (Hons), D.O. (RIO), M.S. (OPHTHAL)', '59053 (WBMC)', '', 'Bhadreswar Main Hospital', 'Mon, Wed, Fri (10:00 AM – 2:00 PM)', '["10:00 AM", "10:45 AM", "11:30 AM", "12:15 PM", "01:00 PM", "01:30 PM"]'::jsonb),
-('doc-2', 'Dr. Avijit Roy', 'Cataract', 'Consultant Eye Surgeon', 'M.B.B.S. (NRS), M.S. (Eye) NRS', 'WBMC 76886', 'dravijitroy1960@gmail.com', 'Bhadreswar Main Hospital', 'Tue, Thu, Sat (10:30 AM – 3:30 PM)', '["10:30 AM", "11:15 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"]'::jsonb),
-('doc-3', 'Dr. Anamika Paul', 'Glaucoma', 'Fellow in Glaucoma', 'M.B.B.S (SSKM), M.S (R.I.O)', '80637 (WBMC)', '', 'Bhadreswar Main Hospital', 'Every Thursday (6:00 PM – 8:00 PM) (By Appointment)', '["06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM"]'::jsonb),
-('doc-4', 'Dr. Q Shehnaz Waheed', 'Cornea', 'Eye Surgeon', 'M.B.B.S, M.S (K.O.L)', 'WBMC 67494', '', 'Bhadreswar Main Hospital', 'Mon, Wed, Fri (2:00 PM – 6:00 PM)', '["02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]'::jsonb),
-('doc-6', 'Dr. Abhisek Chaubey', 'Pediatric', 'Consultant Eye Surgeon', 'MBBS, MS', 'WBMC 67997', '', 'Bhadreswar Main Hospital', 'Every Thursday (11:00 AM – 4:00 PM)', '["11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"]'::jsonb),
-('doc-7', 'Opt. Kanchan Chatterjee', 'Senior Optometrist', 'Senior Optometrist', 'Primary Eye Check-up & Refraction Contact Lens Assessment & Training Based Practice', '', '', 'Bhadreswar Main Hospital', 'Mon-Sun (10:00 AM – 9:00 PM)', '[]'::jsonb)
+('doc-1', 'Dr. Manas Kr. Pal', 'Cataract & Phaco Surgery', 'Consultant Eye Surgeon', 'M.B.B.S, M.S. (Hons), D.O. (RIO), M.S. (OPHTHAL)', '59053 (WBMC)', '', '["Cataract & Phaco Surgery", "Primary Eye Check-up & Refraction (Optometry)", "Pediatric Ophthalmology", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Mon, Wed, Fri (10:00 AM – 2:00 PM)', '["10:00 AM", "10:45 AM", "11:30 AM", "12:15 PM", "01:00 PM", "01:30 PM"]'::jsonb),
+('doc-2', 'Dr. Avijit Roy', 'Primary Eye Check-up & Refraction (Optometry)', 'Consultant Eye Surgeon', 'M.B.B.S. (NRS), M.S. (Eye) NRS', 'WBMC 76886', 'dravijitroy1960@gmail.com', '["Primary Eye Check-up & Refraction (Optometry)", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Tue, Thu, Sat (10:30 AM – 3:30 PM)', '["10:30 AM", "11:15 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"]'::jsonb),
+('doc-3', 'Dr. Anamika Paul', 'Glaucoma & Laser Clinic', 'Fellow in Glaucoma', 'M.B.B.S (SSKM), M.S (R.I.O)', '80637 (WBMC)', '', '["Cataract & Phaco Surgery", "Primary Eye Check-up & Refraction (Optometry)", "Glaucoma & Laser Clinic", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Every Thursday (6:00 PM – 8:00 PM) (By Appointment)', '["06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM"]'::jsonb),
+('doc-4', 'Dr. Q Shehnaz Waheed', 'Cornea & Ocular Surface', 'Eye Surgeon', 'M.B.B.S, M.S (K.O.L)', 'WBMC 67494', '', '["Cataract & Phaco Surgery", "Primary Eye Check-up & Refraction (Optometry)", "Cornea & Ocular Surface", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Mon, Wed, Fri (2:00 PM – 6:00 PM)', '["02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]'::jsonb),
+('doc-6', 'Dr. Abhisek Chaubey', 'Pediatric Ophthalmology', 'Consultant Eye Surgeon', 'MBBS, MS', 'WBMC 67997', '', '["Cataract & Phaco Surgery", "Primary Eye Check-up & Refraction (Optometry)", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Every Thursday (11:00 AM – 4:00 PM)', '["11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"]'::jsonb),
+('doc-7', 'Opt. Kanchan Chatterjee', 'Primary Eye Check-up & Refraction (Optometry)', 'Senior Optometrist', 'Primary Eye Check-up & Refraction Contact Lens Assessment & Training Based Practice', '', '', '["Primary Eye Check-up & Refraction (Optometry)", "Comprehensive Eyecheckup"]'::jsonb, 'Bhadreswar Main Hospital', 'Mon-Sun (10:00 AM – 9:00 PM)', '["10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM", "08:00 PM"]'::jsonb)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.appointments (reference, patient_name, patient_phone, patient_age, patient_gender, doctor_name, specialty, appointment_date, slot_time, branch, status, symptoms)

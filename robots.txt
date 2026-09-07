@@ -1,0 +1,18 @@
+# ============================================================================
+# NETRADARPAN EYE HOSPITAL - ROBOTS.TXT
+# Optimized for Googlebot & Search Engine Indexing
+# ============================================================================
+
+User-agent: *
+Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Prevent search engines from crawling backend API & DB config directories
+Disallow: /api/
+Disallow: /server/
+Disallow: /supabase/
+
+# Link to XML Sitemap for Google Webmaster Tools / Search Console
+Sitemap: https://netradarpan.com/sitemap.xml
