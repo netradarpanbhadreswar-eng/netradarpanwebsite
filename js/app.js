@@ -1050,6 +1050,7 @@ window.onclick = function (event) {
 function toggleMobileNav() {
     const nav = document.getElementById('navLinks');
     let overlay = document.getElementById('navOverlay');
+    const navTag = document.querySelector('nav');
 
     if (!overlay) {
         overlay = document.createElement('div');
@@ -1064,7 +1065,7 @@ function toggleMobileNav() {
         headerDiv.className = 'mobile-nav-header';
         headerDiv.innerHTML = `
             <div class="mobile-nav-brand">
-                <img src="img/logo.png" alt="Logo" onerror="this.style.display='none'">
+                <img src="images/logo.png" alt="Logo" onerror="this.src='images/logo.jpg'">
                 <span>Netradarpan Menu</span>
             </div>
             <button class="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Close Menu">
@@ -1081,11 +1082,13 @@ function toggleMobileNav() {
             nav.classList.remove('mobile-open');
             nav.classList.remove('show');
             overlay.classList.remove('active');
+            if (navTag) navTag.style.zIndex = '';
             document.body.style.overflow = '';
         } else {
             nav.classList.add('mobile-open');
             nav.classList.add('show');
             overlay.classList.add('active');
+            if (navTag) navTag.style.zIndex = '10000';
             document.body.style.overflow = 'hidden';
         }
     }
