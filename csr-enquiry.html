@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CSR Enquiry - Netradarpan Hospital. Invite companies to contact the hospital for CSR proposals and healthcare project discussions.">
+    <title>Netradarpan Hospital | CSR & Enquiry</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .csr-page-wrapper {
+            background: linear-gradient(180deg, var(--brand-light) 0%, #ffffff 100%);
+            min-height: calc(100vh - 200px);
+            padding: 50px 20px 80px 20px;
+        }
+
+        .csr-header-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .csr-header-container h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--brand-primary);
+            margin-bottom: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .csr-header-container p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        .csr-content-layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .csr-card-box {
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid var(--brand-border);
+            border-radius: var(--radius-lg);
+            padding: 36px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .csr-input-group {
+            margin-bottom: 18px;
+        }
+
+        .csr-form-control {
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--brand-border);
+            background: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-heading);
+            outline: none;
+            transition: var(--transition);
+            box-sizing: border-box;
+        }
+
+        .csr-form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .csr-form-control:focus {
+            background: #ffffff;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(30, 36, 96, 0.15);
+        }
+
+        textarea.csr-form-control {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .csr-btn-submit {
+            background: var(--brand-primary);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .csr-btn-submit:hover {
+            background: var(--brand-indigo);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .csr-content-layout {
+                justify-content: center;
+            }
+            .csr-card-box {
+                max-width: 100%;
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span><i class="fa-solid fa-clock text-amber"></i> <strong>OPD Hours:</strong> 10:00 AM - 9:00 PM
+                (Sun-Mon)</span>
+            <span class="badge-ayushman"><i class="fa-solid fa-certificate"></i> Ayushman Bharat Empanelled</span>
+        </div>
+        <div class="top-bar-right">
+            <a href="tel:03335562702"><i class="fa-solid fa-phone"></i> Helpline: 03335562702 / 6290670180</a>
+            <a href="mailto:netradarpanbhadreswar@gmail.com"><i class="fa-solid fa-envelope"></i>
+                netradarpanbhadreswar@gmail.com</a>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="top-header">
+        <a href="index.html" class="brand-container">
+            <img src="images/logo.png" alt="Netradarpan Hospital Logo" class="brand-logo-img"
+                onerror="this.src='images/logo.jpg'">
+            <div class="brand-text">
+                <div class="logo-name">NETRADARPAN HOSPITAL</div>
+                <div class="tagline">Bhadreswar Netradarpan Welfare Foundation</div>
+                <div class="sub-location"><i class="fa-solid fa-location-dot"></i> 148/1, R.B. Avenue Bye Lane,(Park
+                    Maidan), Govt.Colony, Bhadreswar</div>
+            </div>
+        </a>
+
+        <div class="header-actions">
+            <a href="patient-portal.html#portal-appointments" class="btn btn-outline">
+                <i class="fa-solid fa-clipboard-user"></i> My Appointments
+            </a>
+            <button class="btn btn-accent" onclick="openBookingWizard()">
+                <i class="fa-solid fa-calendar-check"></i> Book Appointment
+            </button>
+            <button class="btn btn-secondary" onclick="openAdminModal()">
+                <i class="fa-solid fa-user-shield"></i> Staff Login
+            </button>
+        </div>
+    </header>
+
+    <!-- NAVIGATION MENU -->
+    <nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()">
+            <i class="fa-solid fa-bars"></i> Menu
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li class="nav-item-dropdown">
+                <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us <i
+                        class="fa-solid fa-chevron-down nav-chevron"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="about.html#journey"><i class="fa-solid fa-landmark"></i> About Us & Journey</a></li>
+                    <li><a href="about.html#mission"><i class="fa-solid fa-bullseye"></i> Our Mission & Vision</a></li>
+                    <li><a href="about.html#gallery"><i class="fa-solid fa-images"></i> Hospital Gallery</a></li>
+                    <li><a href="about.html#achievements"><i class="fa-solid fa-trophy"></i> Achievements &
+                            Milestones</a></li>
+                    <li class="dropdown-header-label">Our Priority Programmes</li>
+                    <li><a href="about.html#priority-programmes"><i class="fa-solid fa-layer-group"></i> Programmes
+                            Overview</a></li>
+                    <li><a href="about.html#hospital-in-a-bag"><i class="fa-solid fa-suitcase-medical"></i> Hospital in
+                            a Bag</a></li>
+                    <li><a href="about.html#ayushman-bharat"><i class="fa-solid fa-certificate"></i> Ayushman Bharat
+                            (PM-JAY)</a></li>
+                    <li><a href="about.html#community-eye-care"><i class="fa-solid fa-hand-holding-heart"></i> Community
+                            Eye Care</a></li>
+                </ul>
+            </li>
+            <li><a href="specialties.html"><i class="fa-solid fa-stethoscope"></i> Clinical Specialties</a></li>
+            <li><a href="doctors.html"><i class="fa-solid fa-user-doctor"></i> Our Doctors</a></li>
+            <li><a href="patient-portal.html"><i class="fa-solid fa-hospital-user"></i> Patient Portal</a></li>
+            <li class="nav-item-dropdown">
+                <a href="csr-camps.html" class="active"><i class="fa-solid fa-hand-holding-heart"></i> Camps <i
+                        class="fa-solid fa-chevron-down nav-chevron"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="csr-camps.html#eye-screening-camps"><i class="fa-solid fa-tent"></i> Eye Screening
+                            Camps</a></li>
+                    <li><a href="csr-enquiry.html"><i class="fa-solid fa-handshake"></i> CSR Enquiry</a></li>
+                </ul>
+            </li>
+            <li><a href="feedback.html"><i class="fa-solid fa-star"></i> Feedback</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-address-book"></i> Contact Us</a></li>
+            <li><a href="javascript:void(0)" onclick="openBookingWizard()" class="nav-book-btn"><i
+                        class="fa-solid fa-calendar-plus"></i> Book Online</a></li>
+        </ul>
+    </nav>
+
+    <!-- CSR ENQUIRY MAIN CONTENT -->
+    <div class="csr-page-wrapper">
+        <div class="csr-header-container">
+            <h1>CSR Enquiry</h1>
+            <p>Invite companies to contact the hospital for a CSR proposal and project discussion.</p>
+        </div>
+
+        <div class="csr-content-layout">
+            <div class="csr-card-box">
+                <form id="csrEnquiryForm" onsubmit="handleCSREnquirySubmit(event)">
+                    <div class="csr-input-group">
+                        <input type="text" id="csrCompany" class="csr-form-control" placeholder="Company / Organisation" required>
+                    </div>
+                    <div class="csr-input-group">
+                        <input type="text" id="csrContactPerson" class="csr-form-control" placeholder="Contact Person" required>
+                    </div>
+                    <div class="csr-input-group">
+                        <input type="text" id="csrEmailPhone" class="csr-form-control" placeholder="Email / Phone" required>
+                    </div>
+                    <div class="csr-input-group">
+                        <textarea id="csrRequirement" class="csr-form-control" rows="5" placeholder="CSR requirement" required></textarea>
+                    </div>
+                    <button type="submit" class="csr-btn-submit">Send CSR Enquiry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER MATCHING WEBSITE THEME -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <img src="images/logo.png" alt="Netradarpan Hospital"
+                        style="width: 48px; height: 48px; border-radius: 50%; background: white; padding: 2px;"
+                        onerror="this.src='images/logo.jpg'">
+                    <div>
+                        <h4 style="margin-bottom: 0;">NETRADARPAN HOSPITAL</h4>
+                        <div style="font-size: 11.5px; color: var(--brand-yellow);">Bhadreswar Netradarpan Welfare
+                            Foundation</div>
+                    </div>
+                </div>
+                <p>Committed to providing world-class ophthalmic care with modern Phaco & primary eye check-up
+                    facilities to
+                    ensure quality vision for all.</p>
+                <p><span class="badge-ayushman"><i class="fa-solid fa-shield"></i> Ayushman Bharat Partner</span></p>
+                <div class="footer-social-wrap">
+                    <div class="footer-social-title">Follow Us</div>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/Netradarpan/" target="_blank" rel="noopener noreferrer"
+                            class="footer-social-link facebook" title="Follow us on Facebook" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@netradarpan" target="_blank" rel="noopener noreferrer"
+                            class="footer-social-link youtube" title="Subscribe on YouTube" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="specialties.html">Clinical Specialties</a></li>
+                    <li><a href="doctors.html">Our Doctors</a></li>
+                    <li><a href="patient-portal.html">Patient Knowledge Portal</a></li>
+                    <li><a href="csr-enquiry.html">CSR Enquiry</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Outreach Initiatives</h4>
+                <ul class="footer-links">
+                    <li><a href="csr-camps.html">Rural Eye Camps</a></li>
+                    <li><a href="csr-camps.html">School Eye Screenings</a></li>
+                    <li><a href="csr-camps.html">Host a Community Camp</a></li>
+                    <li><a href="csr-enquiry.html">CSR Enquiry & Proposals</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Hospital Location</h4>
+                <p><i class="fa-solid fa-location-dot text-amber"></i> <strong>148/1, R.B. Avenue Bye Lane,(Park
+                        Maidan), Govt.Colony, Bhadreswar</strong></p>
+                <p><i class="fa-solid fa-phone text-amber"></i> <strong>03335562702 / 6290670180</strong></p>
+                <p><i class="fa-solid fa-envelope text-amber"></i> <strong>netradarpanbhadreswar@gmail.com</strong></p>
+                <p><i class="fa-solid fa-clock text-amber"></i> <strong>OPD:</strong> 10:00 AM - 9:00 PM</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2009-2026 Netradarpan Hospital (Bhadreswar Netradarpan Welfare Foundation). All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Shared Toast Notification -->
+    <div id="toastNotification" class="toast"><i class="fa-solid fa-circle-check"></i> <span
+            id="toastMessage">Done</span></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function handleCSREnquirySubmit(e) {
+            e.preventDefault();
+            const company = document.getElementById('csrCompany').value;
+            const contactPerson = document.getElementById('csrContactPerson').value;
+            
+            if (typeof showToast === 'function') {
+                showToast(`Thank you ${contactPerson}! Your CSR enquiry for ${company} has been received.`, 'success');
+            } else {
+                alert(`Thank you ${contactPerson}! Your CSR enquiry for ${company} has been submitted.`);
+            }
+            
+            document.getElementById('csrEnquiryForm').reset();
+        }
+    </script>
+</body>
+
+</html>

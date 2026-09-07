@@ -228,16 +228,23 @@ function openBookingWizard(prefilledDoctorId = null, prefilledSpecialty = null) 
         dateInput.min = new Date().toISOString().split('T')[0];
     }
 
-    if (prefilledSpecialty) {
-        const specSelect = document.getElementById('bookingSpecialty');
-        if (specSelect) specSelect.value = prefilledSpecialty;
-    }
-
-    updateDoctorDropdown();
+    const docSelect = document.getElementById('bookingDoctor');
+    const specSelect = document.getElementById('bookingSpecialty');
 
     if (prefilledDoctorId) {
-        const docSelect = document.getElementById('bookingDoctor');
-        if (docSelect) docSelect.value = prefilledDoctorId;
+        const doc = DOCTORS.find(d => d.id === prefilledDoctorId);
+        if (doc) {
+            const specToUse = prefilledSpecialty || (doc.specializations && doc.specializations.length > 0 ? doc.specializations[0] : doc.specialty);
+            if (specSelect && specToUse) specSelect.value = specToUse;
+            updateDoctorDropdown();
+            if (docSelect) docSelect.value = prefilledDoctorId;
+        } else {
+            if (prefilledSpecialty && specSelect) specSelect.value = prefilledSpecialty;
+            updateDoctorDropdown();
+        }
+    } else {
+        if (prefilledSpecialty && specSelect) specSelect.value = prefilledSpecialty;
+        updateDoctorDropdown();
     }
 
     goToStep(1);
@@ -248,10 +255,24 @@ function updateDoctorDropdown() {
     const docSelect = document.getElementById('bookingDoctor');
     if (!specialtyEl || !docSelect) return;
 
-    const specialty = specialtyEl.value;
-    const matchedDocs = specialty === 'General'
-        ? DOCTORS
-        : DOCTORS.filter(d => d.specialty === specialty);
+    const selectedSpecialty = specialtyEl.value;
+
+    const matchedDocs = DOCTORS.filter(doc => {
+        if (!selectedSpecialty) return true;
+
+        if (Array.isArray(doc.specializations)) {
+            return doc.specializations.includes(selectedSpecialty) ||
+                doc.specializations.some(s => s.toLowerCase() === selectedSpecialty.toLowerCase());
+        }
+
+        if (doc.specialty) {
+            const specLower = doc.specialty.toLowerCase();
+            const selLower = selectedSpecialty.toLowerCase();
+            return specLower.includes(selLower) || selLower.includes(specLower);
+        }
+
+        return true;
+    });
 
     const list = matchedDocs.length > 0 ? matchedDocs : DOCTORS;
 
@@ -263,40 +284,13 @@ function updateDoctorDropdown() {
 }
 
 function generateAvailableSlots() {
-    const docSelect = document.getElementById('bookingDoctor');
-    const dateInput = document.getElementById('bookingDate');
-    const slotContainer = document.getElementById('slotContainer');
-    if (!docSelect || !dateInput || !slotContainer) return;
-
-    const docId = docSelect.value;
-    const selectedDate = dateInput.value;
-    const doc = DOCTORS.find(d => d.id === docId) || DOCTORS[0];
-
-    const bookedSlots = appointments
-        .filter(a => a.doctorName === doc.name && a.appointmentDate === selectedDate && a.status !== 'cancelled')
-        .map(a => a.slotTime);
-
-    const slots = doc.slots || [];
-
-    slotContainer.innerHTML = slots.map(slot => {
-        const isBooked = bookedSlots.includes(slot);
-        return `
-            <button type="button" 
-                    class="slot-btn ${isBooked ? 'disabled' : ''}" 
-                    ${isBooked ? 'disabled' : ''}
-                    onclick="selectSlot('${slot}', this)">
-                ${slot} ${isBooked ? '(Full)' : ''}
-            </button>
-        `;
-    }).join('');
-
     const sel = document.getElementById('selectedSlot');
-    if (sel) sel.value = '';
+    if (sel) sel.value = 'OPD Consultation (10:00 AM - 9:00 PM)';
 }
 
 function selectSlot(slot, btn) {
     document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+    if (btn) btn.classList.add('selected');
     const sel = document.getElementById('selectedSlot');
     if (sel) sel.value = slot;
 }
@@ -315,15 +309,10 @@ function goToStep(step) {
 }
 
 function validateStep2AndProceed() {
-    const slot = document.getElementById('selectedSlot')?.value;
     const date = document.getElementById('bookingDate')?.value;
 
     if (!date) {
         showToast('Please select an appointment date.', 'error');
-        return;
-    }
-    if (!slot) {
-        showToast('Please select an available consultation slot.', 'error');
         return;
     }
     goToStep(3);
@@ -339,7 +328,7 @@ async function confirmAppointmentBooking() {
     const specialty = document.getElementById('bookingSpecialty')?.value;
     const doctorId = document.getElementById('bookingDoctor')?.value;
     const date = document.getElementById('bookingDate')?.value;
-    const slot = document.getElementById('selectedSlot')?.value;
+    const slot = document.getElementById('selectedSlot')?.value || 'OPD Consultation (10:00 AM - 9:00 PM)';
 
     if (!name || !phone || !age) {
         showToast('Please enter all mandatory patient details.', 'error');
@@ -615,7 +604,12 @@ function renderDoctors(filter = 'all') {
 
     const filtered = filter === 'all'
         ? DOCTORS
-        : DOCTORS.filter(d => d.specialty.toLowerCase() === filter.toLowerCase());
+        : DOCTORS.filter(d => {
+            if (Array.isArray(d.specializations)) {
+                return d.specializations.some(s => s.toLowerCase() === filter.toLowerCase() || s.toLowerCase().includes(filter.toLowerCase()) || filter.toLowerCase().includes(s.toLowerCase()));
+            }
+            return (d.specialty || '').toLowerCase().includes(filter.toLowerCase()) || filter.toLowerCase().includes((d.specialty || '').toLowerCase());
+        });
 
     container.innerHTML = filtered.map(doc => `
         <div class="doctor-card">
@@ -628,11 +622,7 @@ function renderDoctors(filter = 'all') {
             </div>
             <div class="doctor-info">
                 <div class="doctor-degrees">${doc.degrees || ''}</div>
-                ${(doc.reg_no || doc.regNo) ? `
-                    <div style="border-top: 1px solid var(--brand-border); padding-top: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-                        <i class="fa-solid fa-id-card" style="color: var(--brand-crimson); margin-right: 6px;"></i> Reg. No: <strong style="color: var(--text-heading);">${doc.reg_no || doc.regNo}</strong>
-                    </div>
-                ` : '<div style="border-top: 1px solid var(--brand-border); padding-top: 10px;"></div>'}
+                <div style="border-top: 1px solid var(--brand-border); padding-top: 10px;"></div>
                 ${doc.email ? `
                     <div style="font-size: 11.5px; color: var(--brand-primary); margin-bottom: 8px; word-break: break-all;">
                         <i class="fa-solid fa-envelope" style="color: var(--brand-amber); margin-right: 6px;"></i> <a href="mailto:${doc.email}" style="color: inherit; text-decoration: none; font-weight: 600;">${doc.email}</a>
@@ -786,7 +776,7 @@ async function addCamp(title, location, date, patients, details, driveUrl) {
         });
         if (res.ok) {
             await fetchCamps();
-            showToast('Camp schedule added to CSR section!', 'success');
+            showToast('Camp schedule published to Camps section!', 'success');
         }
     } catch (err) {
         showToast('Error adding camp schedule.', 'error');
@@ -850,6 +840,10 @@ function switchAdminTab(tabName, btn) {
     if (tabName === 'appointments') {
         document.getElementById('adminTabAppointments').style.display = 'block';
         renderAdminAppointments();
+    } else if (tabName === 'doctors') {
+        const tabEl = document.getElementById('adminTabDoctors');
+        if (tabEl) tabEl.style.display = 'block';
+        renderAdminDoctors();
     } else if (tabName === 'gallery') {
         document.getElementById('adminTabGallery').style.display = 'block';
         renderAdminGallery();
@@ -860,6 +854,79 @@ function switchAdminTab(tabName, btn) {
         document.getElementById('adminTabAchievements').style.display = 'block';
         renderAdminAchievements();
     }
+}
+
+async function addDoctor(name, dept_label, degrees, email, timing, specializations) {
+    try {
+        const res = await fetch(`${API_BASE}/doctors`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, dept_label, degrees, email, timing, specializations })
+        });
+        if (res.ok) {
+            await fetchDoctors();
+            renderAdminDoctors();
+            showToast('New doctor added successfully!', 'success');
+        }
+    } catch (err) {
+        showToast('Error adding doctor.', 'error');
+    }
+}
+
+async function deleteDoctor(id) {
+    try {
+        const res = await fetch(`${API_BASE}/doctors/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await fetchDoctors();
+            renderAdminDoctors();
+            showToast('Doctor profile removed.', 'success');
+        }
+    } catch (err) {
+        showToast('Error removing doctor.', 'error');
+    }
+}
+
+function renderAdminDoctors() {
+    const container = document.getElementById('adminDoctorsList');
+    if (!container) return;
+
+    if (DOCTORS.length === 0) {
+        container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted);">No doctors available.</p>';
+        return;
+    }
+
+    container.innerHTML = DOCTORS.map(doc => `
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border: 1px solid var(--brand-border); border-radius: 6px; font-size: 13px;">
+            <div>
+                <strong>${doc.name}</strong> <span style="font-size: 11px; background: var(--brand-light); color: var(--brand-primary); padding: 2px 6px; border-radius: 4px;">${doc.dept_label || 'Surgeon'}</span>
+                <div style="font-size: 11.5px; color: var(--text-muted);">${doc.degrees || ''}</div>
+                <div style="font-size: 11px; color: var(--brand-amber); margin-top: 2px;">
+                    Specializations: ${(doc.specializations || [doc.specialty]).join(', ')}
+                </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="deleteDoctor('${doc.id}')" style="color: var(--danger); border-color: var(--danger);"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+    `).join('');
+}
+
+function handleAdminAddDoctor(e) {
+    e.preventDefault();
+    const name = document.getElementById('admDocName')?.value;
+    const dept_label = document.getElementById('admDocDept')?.value;
+    const degrees = document.getElementById('admDocDegrees')?.value;
+    const email = document.getElementById('admDocEmail')?.value;
+    const timing = document.getElementById('admDocTiming')?.value;
+
+    const checkboxes = document.querySelectorAll('.admDocSpecCheck:checked');
+    const specializations = Array.from(checkboxes).map(c => c.value);
+
+    if (specializations.length === 0) {
+        showToast('Please select at least one specialization category.', 'error');
+        return;
+    }
+
+    addDoctor(name, dept_label, degrees, email, timing, specializations);
+    e.target.reset();
 }
 
 function renderAdminGallery() {

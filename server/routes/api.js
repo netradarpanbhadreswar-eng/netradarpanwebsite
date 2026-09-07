@@ -11,10 +11,16 @@ const memoryStore = {
         {
             id: 'doc-1',
             name: 'Dr. Manas Kr. Pal',
-            specialty: 'Cataract',
+            specialty: 'Cataract & Phaco Surgery',
             dept_label: 'Consultant Eye Surgeon',
             degrees: 'M.B.B.S, M.S. (Hons), D.O. (RIO), M.S. (OPHTHAL)',
             reg_no: '59053 (WBMC)',
+            specializations: [
+                'Cataract & Phaco Surgery',
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Pediatric Ophthalmology',
+                'Comprehensive Eyecheckup'
+            ],
             email: '',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Mon, Wed, Fri (10:00 AM – 2:00 PM)',
@@ -23,10 +29,14 @@ const memoryStore = {
         {
             id: 'doc-2',
             name: 'Dr. Avijit Roy',
-            specialty: 'Cataract',
+            specialty: 'Primary Eye Check-up & Refraction (Optometry)',
             dept_label: 'Consultant Eye Surgeon',
             degrees: 'M.B.B.S. (NRS), M.S. (Eye) NRS',
             reg_no: 'WBMC 76886',
+            specializations: [
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Comprehensive Eyecheckup'
+            ],
             email: 'dravijitroy1960@gmail.com',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Tue, Thu, Sat (10:30 AM – 3:30 PM)',
@@ -35,10 +45,16 @@ const memoryStore = {
         {
             id: 'doc-3',
             name: 'Dr. Anamika Paul',
-            specialty: 'Glaucoma',
+            specialty: 'Glaucoma & Laser Clinic',
             dept_label: 'Fellow in Glaucoma',
             degrees: 'M.B.B.S (SSKM), M.S (R.I.O)',
             reg_no: '80637 (WBMC)',
+            specializations: [
+                'Cataract & Phaco Surgery',
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Glaucoma & Laser Clinic',
+                'Comprehensive Eyecheckup'
+            ],
             email: '',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Every Thursday (6:00 PM – 8:00 PM) (By Appointment)',
@@ -47,10 +63,16 @@ const memoryStore = {
         {
             id: 'doc-4',
             name: 'Dr. Q Shehnaz Waheed',
-            specialty: 'Cornea',
+            specialty: 'Cornea & Ocular Surface',
             dept_label: 'Eye Surgeon',
             degrees: 'M.B.B.S, M.S (K.O.L)',
             reg_no: 'WBMC 67494',
+            specializations: [
+                'Cataract & Phaco Surgery',
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Cornea & Ocular Surface',
+                'Comprehensive Eyecheckup'
+            ],
             email: '',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Mon, Wed, Fri (2:00 PM – 6:00 PM)',
@@ -59,10 +81,15 @@ const memoryStore = {
         {
             id: 'doc-6',
             name: 'Dr. Abhisek Chaubey',
-            specialty: 'Pediatric',
+            specialty: 'Pediatric Ophthalmology',
             dept_label: 'Consultant Eye Surgeon',
             degrees: 'MBBS, MS',
             reg_no: 'WBMC 67997',
+            specializations: [
+                'Cataract & Phaco Surgery',
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Comprehensive Eyecheckup'
+            ],
             email: '',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Every Thursday (11:00 AM – 4:00 PM)',
@@ -71,14 +98,18 @@ const memoryStore = {
         {
             id: 'doc-7',
             name: 'Opt. Kanchan Chatterjee',
-            specialty: 'Senior Optometrist',
+            specialty: 'Primary Eye Check-up & Refraction (Optometry)',
             dept_label: 'Senior Optometrist',
             degrees: 'Primary Eye Check-up & Refraction Contact Lens Assessment & Training Based Practice',
             reg_no: '',
+            specializations: [
+                'Primary Eye Check-up & Refraction (Optometry)',
+                'Comprehensive Eyecheckup'
+            ],
             email: '',
             branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
             timing: 'Mon-Sun (10:00 AM – 9:00 PM)',
-            slots: []
+            slots: ['10:00 AM', '11:00 AM', '12:00 PM', '02:00 PM', '04:00 PM', '06:00 PM', '08:00 PM']
         }
     ],
     appointments: [
@@ -226,6 +257,39 @@ router.get('/doctors', async (req, res) => {
         if (!error && data && data.length > 0) return res.json(data);
     }
     return res.json(memoryStore.doctors);
+});
+
+router.post('/doctors', async (req, res) => {
+    const { name, dept_label, degrees, email, timing, specializations } = req.body;
+    const newDoc = {
+        id: 'doc-' + Date.now(),
+        name,
+        specialty: specializations && specializations.length > 0 ? specializations[0] : 'General',
+        dept_label: dept_label || 'Consultant Eye Surgeon',
+        degrees: degrees || '',
+        specializations: specializations || ['Comprehensive Eyecheckup'],
+        email: email || '',
+        branch: '148/1, R.B. Avenue Bye Lane,(Park Maidan), Govt.Colony, Bhadreswar',
+        timing: timing || 'Mon-Sat (10:00 AM – 5:00 PM)',
+        slots: ['10:00 AM', '11:00 AM', '12:00 PM', '02:00 PM', '04:00 PM']
+    };
+
+    if (isConfigured && supabase) {
+        const { data, error } = await supabase.from('doctors').insert([newDoc]).select();
+        if (!error && data) return res.json(data[0]);
+    }
+
+    memoryStore.doctors.push(newDoc);
+    return res.json(newDoc);
+});
+
+router.delete('/doctors/:id', async (req, res) => {
+    const { id } = req.params;
+    if (isConfigured && supabase) {
+        await supabase.from('doctors').delete().eq('id', id);
+    }
+    memoryStore.doctors = memoryStore.doctors.filter(d => d.id !== id);
+    return res.json({ success: true, message: 'Doctor deleted successfully' });
 });
 
 // 3. APPOINTMENTS API
